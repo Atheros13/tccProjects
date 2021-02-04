@@ -4,13 +4,15 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>c70d0140-cf49-4e1e-aea2-99c24ce7dc2b</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>tccProjects.py</StartupFile>
+    <StartupFile>
+    </StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>tccProjects</Name>
     <RootNamespace>tccProjects</RootNamespace>
+    <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,10 +23,43 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="tccProjects.py" />
+    <Compile Include="app\CSV\csv.py" />
+    <Compile Include="app\CSV\__init__.py" />
+    <Compile Include="app\Outlook\outlook438.py" />
+    <Compile Include="app\Outlook\outlook.py" />
+    <Compile Include="app\Outlook\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\Selenium\chrome.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\Selenium\__init__.py" />
+    <Compile Include="app\__init__.py" />
+    <Compile Include="Project_438_Emails\main_action_email.py" />
+    <Compile Include="Project_438_Emails\main_return_data.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="requirements.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="app\CSV\" />
+    <Folder Include="Project_438_Emails\" />
+    <Folder Include="app\" />
+    <Folder Include="app\Outlook\" />
+    <Folder Include="app\Selenium\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Interpreter Include="env\">
+      <Id>env</Id>
+      <Version>3.7</Version>
+      <Description>env (Python 3.7 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X64</Architecture>
+    </Interpreter>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
