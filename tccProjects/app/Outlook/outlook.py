@@ -12,12 +12,12 @@ class Outlook():
     def get_folders(self):
         """Creates references to specific folders. Only self.inbox will be a standard folder."""
 
-        self.inbox = None
+        self.inbox = []
 
     def get_email(self):
         """Returns an email from the self.inbox folder."""
 
-        for email in self.inbox:
+        for email in self.inbox.Items:
             if self.check_email(email):
                 return email
 

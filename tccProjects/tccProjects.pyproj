@@ -4,8 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>c70d0140-cf49-4e1e-aea2-99c24ce7dc2b</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>
-    </StartupFile>
+    <StartupFile>Project_438_Emails\main_action_email.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -25,6 +24,12 @@
   <ItemGroup>
     <Compile Include="app\CSV\csv.py" />
     <Compile Include="app\CSV\__init__.py" />
+    <Compile Include="app\functions\functions.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\functions\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="app\Outlook\outlook438.py" />
     <Compile Include="app\Outlook\outlook.py" />
     <Compile Include="app\Outlook\__init__.py">
@@ -45,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\CSV\" />
+    <Folder Include="app\functions\" />
     <Folder Include="Project_438_Emails\" />
     <Folder Include="app\" />
     <Folder Include="app\Outlook\" />

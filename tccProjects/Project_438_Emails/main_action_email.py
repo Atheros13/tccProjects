@@ -11,12 +11,15 @@ from selenium.webdriver.common.keys import Keys
 
 import datetime
 import sys
+import time
 import webbrowser
 
 ## APP IMPORTS 
 from app.CSV.csv import CSV
 from app.Outlook.outlook438 import Outlook438
 from app.Selenium.chrome import ChromeDriver
+
+from app.functions import is_integer
 
 ## MAIN CLASS ##
 class Project438ActionEmail():
@@ -33,6 +36,8 @@ class Project438ActionEmail():
         self.outlook = Outlook438()
         # access an email to work with
         self.email = self.outlook.get_email()
+        if self.email == None:
+            sys.exit(0)
         # extract data from email in array, example below:
         # [subject, message, notepad, contact, add1, add2, add3, add4, zip, phone, email, wanted1, wanted2, wanted3, best_time]
         self.email_data = self.build_email_data()
@@ -56,7 +61,7 @@ class Project438ActionEmail():
             self.close()
         else:
             self.process_data()
-            self.close()
+            time.sleep(300)
 
     ## BUILD METHODS
     def build_remedy_data(self):
@@ -80,7 +85,10 @@ class Project438ActionEmail():
 
     def build_email_data(self):
         """Processes an email and returns an array of the data."""
-        
+ 
+        dvs_subjects = ['New submission from Free Consultation - Homepage', 'New submission from DVS Contact Us',
+                        'New submission from Book A Consultation', 'New submission from Book Service']        
+
         msg = self.email
         subject = msg.subject
         message = ""
@@ -255,11 +263,11 @@ class Project438ActionEmail():
         password = self.remedy_data[2]
 
         self.driver.get("https://www7.eaccounts.co.nz/eLogin_Main.asp")  
-        selfdriver.find_element_by_name("User__Name").send_keys(username)
+        self.driver.find_element_by_name("User__Name").send_keys(username)
         self.driver.find_element_by_name("User__Pass").send_keys(password)
-        self.time.sleep(0.9)
+        time.sleep(0.5)
         self.driver.find_element_by_name('Login').click()
-        time.sleep(0.9)
+        time.sleep(0.5)
         self.driver.find_element_by_class_name("MENU-BUTTON").click()
         self.driver.find_element_by_name("Load_Prospect").click()
 
@@ -300,8 +308,8 @@ class Project438ActionEmail():
         self.driver.find_element_by_name("Prospect_Best_Time").send_keys(best_time)
 
         ## SEARCH CHECK
-        driver.find_element_by_name("dCust__Code").send_keys(add1)
-        driver.find_element_by_name("dCust__Code").send_keys(Keys.ENTER)
+        self.driver.find_element_by_name("dCust__Code").send_keys(add1)
+        self.driver.find_element_by_name("dCust__Code").send_keys(Keys.ENTER)
 
     def driver_prospectSuburbCheck(self):
         """Runs constant check of the "Prospect Suburb" field, if it gets assigned to a 
@@ -364,10 +372,10 @@ class Project438ActionEmail():
         """Enters text data in CRM Note, awaits action, and assigns customer code and email type"""
 
         # enter Email Text in Note Field
-        email_text = "EMAIL RECEIVED: %s\nMESSAGE: %s" % (self.email_data[0], self.email.Body) # subject & email.Body
-        text_box = self.driver.find_element_by_class_name("cke_contents_ltr")
-        text_box.click()
-        text_box.send_keys(email_text)
+        #email_text = "EMAIL RECEIVED: %s\nMESSAGE: %s" % (self.email_data[0], self.email.Body) # subject & email.Body
+        #text_box = self.driver.find_element_by_class_name("cke_contents_ltr")
+        #text_box.click()
+        #text_box.send_keys(email_text)
 
         # wait for action choice
         while count > 0:
@@ -409,23 +417,27 @@ class Project438ActionEmail():
         phone = self.email_data[9]
         message = self.email_data[1]
         address = self.email_data[4]
+        loaded_by = self.remedy_data[0]
 
         csv = CSV("G:\\Customer Reporting\\438-DVS\\Automation\\Emails\\Reports\\", "email_reporting.csv", "a",
-                  ["Subject", "Customer Code", "Action", "Name", "Email", "Phone", "Address", "Message", "Date"])
+                  ["Subject", "Customer Code", "Action", "Name", "Email", "Phone", "Address", "Message", "Date", "TCC Staff"])
 
-        csv.writerow([subject, self.customer_code, self.email_type, name, email, phone, address, message, datetime.datetime.now()])
+        csv.writerow([subject, self.customer_code, self.email_type, name, email, phone, address, message, datetime.datetime.now(), loaded_by])
 
     def process_email(self):
         """Files the email to the correct folder based on self.email_type."""
 
-        if self.email_type in ['Website: Sales Lead', "Call Centre: Sales Lead"]:
+        self.email.FlagRequest = "Mark Complete"
+        self.email.Subject = "%s - %s" % (self.customer_code, self.email.Subject)
+
+        if "Sales Lead" in self.email_type:
             self.email.Move(self.outlook.sales)
-        elif self.email_type in ['Website: Technical', "Call Centre: Technical issue"]:
+        elif "Technical" in self.email_type:
             self.email.Move(self.outlook.technical)
-        elif self.email_type in ["Website: Not in Eaccounts"]:
-            self.email.Move(self.outlook.general)
-        elif self.email_type in ["Call Centre: Filter Send/Change Request"]:
+        elif "Filter" in self.email_type:
             self.email.Move(self.outlook.filters)
+        elif "Spare" in self.email_type:
+            self.email.Move(self.outlook.spare_parts)
         else:
             self.email.Move(self.outlook.general)
 

@@ -1,0 +1,1 @@
+from app.functions.functions import is_integer
