@@ -9,5 +9,8 @@ class ChromeDriver():
 
         chromeOptions = webdriver.ChromeOptions() 
         chromeOptions.add_argument("--remote-debugging-port=9222") 
-
-        self.driver = webdriver.Chrome("G:\\Automation\\Selenium\\chromedriver.exe", chrome_options=chromeOptions) #ChromeDriverManager().install())
+        
+        try:
+            self.driver = webdriver.Chrome("G:\\Automation\\Selenium\\chromedriver.exe", chrome_options=chromeOptions)
+        except:
+            self.driver = webdriver.Chrome(ChromeDriverManager().install())

@@ -44,6 +44,9 @@
     <Compile Include="Project_438_Emails\main_return_data.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Project_438_Emails\main_action_email.spec">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="requirements.txt" />

@@ -43,10 +43,7 @@ class Project438ActionEmail():
         self.email_data = self.build_email_data()
 
         ## NOTEPAD
-        # if the message in the email is too large to include in the prospect
-        # page, open a notepad with the full email data
-        if len(self.email_data[1]) > 210:
-            self.open_notepad()
+        self.open_notepad()
 
         ## DRIVER
         # opens a Chrome driver, processes all website data and extracts operator actions
@@ -369,13 +366,7 @@ class Project438ActionEmail():
         self.customer_code = self.driver.find_elements_by_tag_name('h3')[0].text.split("New Prospect Saved OK - Code = ")[1]
 
     def driver_CRM_Note(self, count):
-        """Enters text data in CRM Note, awaits action, and assigns customer code and email type"""
-
-        # enter Email Text in Note Field
-        #email_text = "EMAIL RECEIVED: %s\nMESSAGE: %s" % (self.email_data[0], self.email.Body) # subject & email.Body
-        #text_box = self.driver.find_element_by_class_name("cke_contents_ltr")
-        #text_box.click()
-        #text_box.send_keys(email_text)
+        """Awaits action, and assigns customer code and email type"""
 
         # wait for action choice
         while count > 0:
@@ -443,7 +434,12 @@ class Project438ActionEmail():
 
     ## CLOSE METHOD
     def close(self):
-        """Closes the browser and ends the script"""
+        """Closes the browser, notepad, and ends the script"""
+
+        try:
+            webbrowser.close()
+        except:
+            pass
 
         self.driver.close()
         self.driver.quit()
