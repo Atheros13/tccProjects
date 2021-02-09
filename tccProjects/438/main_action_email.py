@@ -30,10 +30,11 @@ class Project438ActionEmail():
         # process arguments from Remedy into useable data
         # [loaded_by, username, password]
         self.remedy_data = self.build_remedy_data()
+        button_action = self.remedy_data[3]
 
         ## OUTLOOK
         # access Outlook and reference the required folders
-        self.outlook = Outlook438()
+        self.outlook = Outlook438(button_action)
         # access an email to work with
         self.email = self.outlook.get_email()
         if self.email == None:
@@ -48,13 +49,14 @@ class Project438ActionEmail():
         ## DRIVER
         # opens a Chrome driver, processes all website data and extracts operator actions
         # this mainly results in self.customer_code and self.email_type values
+        self.email_type = "Call Centre: Sales Lead"
         self.driver = ChromeDriver().driver
         self.run_driver()
 
         ## PROCESS
         # if the operator has actioned in 10 minutes, saves a record as a .txt,
         # saves a complete record in a .csv, and files the email
-        if self.customer_code == None:
+        if self.customer_code == None and self.email_type == None:
             self.close()
         else:
             self.process_data()
@@ -71,14 +73,16 @@ class Project438ActionEmail():
             loaded_by = "%s %s" % (argv[1], argv[2])
             username = argv[3]
             password = argv[4]
+            button_action = argv[5] # Inbox or Follow
 
         else:
     
             loaded_by = "Michael Atheros"
             username = "TCC16"
-            password = "dvs08"
+            password = "dvs09"
+            button_action = "Inbox"
 
-        return [loaded_by, username, password]
+        return [loaded_by, username, password, button_action]
 
     def build_email_data(self):
         """Processes an email and returns an array of the data."""
@@ -89,7 +93,7 @@ class Project438ActionEmail():
         msg = self.email
         subject = msg.subject
         message = ""
-        notepad = ""
+        notepad = msg.body
 
         contact = ""
         add1 = ""
@@ -114,17 +118,14 @@ class Project438ActionEmail():
     
             if "Name" == line[:4] or "Name:" == line[:5]:
                 contact = lines[i+1].strip()
-                notepad += "Name: %s\n" % contact
             elif "Email" == line[:5] or "Email:" == line[:6]:
                 email = lines[i+1].strip()
                 try:
                     email = email.split('<')[0]
                 except:
                     pass
-                notepad += "Email: %s\n" % email
             elif "Phone Number" == line[:12] or "Phone Number:" == line[:13] or "Phone" == line[:5] or "Phone:" == line[:6]:
                 phone = lines[i+1].strip()
-                notepad += "Phone: %s" % phone
             elif "Address" == line[:7] or "Address:" == line[:7]:
 
                 if subject in dvs_subjects[1:]:
@@ -170,12 +171,9 @@ class Project438ActionEmail():
                         else:
                             add4 = txt.strip()
 
-                notepad += "Address: %s %s %s %s %s\n\n" % (add1, add2, add3, add4, zip) 
-
             elif "Your Message (Optional)" in line and subject in ['New submission from Book A Consultation', 'New submission from Book Service']:
 
                 message = lines[i+1].strip()
-                notepad += "Your Message (Optional)\n\n%s\n\n" % message
                 if message != "":
                     if len(message) > 70:
                         wanted1 = message[:70]
@@ -188,7 +186,6 @@ class Project438ActionEmail():
             elif 'I have a question about...' in line and subject == 'New submission from DVS Contact Us':
 
                 message = lines[i+1].strip()
-                notepad += "I have a question about...\n\n%s\n\n" % message
                 if message != "":
                     wanted1 = message
                 
@@ -199,7 +196,6 @@ class Project438ActionEmail():
             elif 'Your Message' in line and subject == 'New submission from DVS Contact Us':
 
                 message = lines[i+1].strip()
-                notepad += "Your Message:\n\n%s\n\n" % message
                 if message != "":
                     if wanted1 == "":
                         if len(message) > 70:
@@ -242,9 +238,6 @@ class Project438ActionEmail():
         self.driver_loginToProspect()
         self.driver_prospectInput()
 
-        # check for type of email - assuming a website sales lead
-        self.email_type = self.driver_prospectSuburbCheck()
-
         #
         count, action = self.driver_actionCheck()
         self.customer_code = None
@@ -252,6 +245,8 @@ class Project438ActionEmail():
             self.driver_NewAccount()
         elif action == "CRM":
             self.driver_CRM_Note(count)
+        elif action == "Follow Up":
+            self.driver_FollowUp()
 
     def driver_loginToProspect(self):
         """Opens Eaccounts, logs in, and navigates to Prospect page."""
@@ -308,32 +303,6 @@ class Project438ActionEmail():
         self.driver.find_element_by_name("dCust__Code").send_keys(add1)
         self.driver.find_element_by_name("dCust__Code").send_keys(Keys.ENTER)
 
-    def driver_prospectSuburbCheck(self):
-        """Runs constant check of the "Prospect Suburb" field, if it gets assigned to a 
-        non-suburb, non-chinese, non-newbuild, non-commercial value, then it means the 
-        address is not in eaccounts and may be a technical issue for John, filter request, 
-        or something else. """
-
-        website_lead = 'Website: Sales Lead'
-        while True:
-            try:
-                suburb = Select(self.driver.find_element_by_name("Prospect_Suburb")).first_selected_option.text
-                if suburb[0] == ".":
-                    if "CHINESE LEADS" in suburb:
-                        break
-                    elif ".BUILD" in suburb:
-                        break
-                    elif "COMMERCIAL" in suburb:
-                        break
-                    elif "JOHN CHING" in suburb:
-                        website_lead = "Website: Technical"
-                    else:
-                        website_lead = "Website: Not in Eaccounts"
-            except:
-                break
-
-        return website_lead
-
     def driver_actionCheck(self):
         """Runs a constant check on the page to see if certain web elements
         are present, if they are it indicates what the operator has done,
@@ -343,12 +312,30 @@ class Project438ActionEmail():
         action = None
         while count > 0:
 
+            # check for follow up
+            try:
+                check = self.driver.find_element_by_name("Prospect_Loaded_By").get_attribute("value")
+                if "FOLLOW UP" in check.upper():
+                    return count, "Follow Up"
+            except:
+                pass
+
+            # check for new account and different call type
+            try:
+                note = Select(self.driver.find_element_by_name("Prospect_Note_Type")).first_selected_option.text
+                if note != "Call Centre: Sales Lead":
+                    self.email_type = note
+            except:
+                pass
+
+            # check if new account/propect made
             try:
                 if "New Prospect Saved OK - Code = " in self.driver.find_elements_by_tag_name('h3')[0].text:
                     return count, "New Account"
             except:
                 pass
 
+            # check if CRM note
             try:
                 self.driver.find_element_by_name("Save_CRM") # on CRM note page
                 return count, "CRM"
@@ -383,6 +370,11 @@ class Project438ActionEmail():
 
             count -= 0.3
 
+    def driver_FollowUp(self):
+        """Assigns """
+
+        self.email_type = "Website: TCC to Follow Up"
+
     ## PROCESS METHODS
     def process_data(self):
         """Processes data into a .txt and .csv for use in Remedy and Reporting, 
@@ -393,7 +385,10 @@ class Project438ActionEmail():
         self.process_email()
 
     def process_txt(self):
-        """Writes a .txt file of data, which is used by Remedy to automate the Form."""
+        """
+        CURRENTLY ONLY IN IDEA STAGE
+
+        Writes a .txt file of data, which is used by Remedy to automate the Form."""
 
         file = open('G:\\Customer Reporting\\438-DVS\\Automation\\Emails\\RemedyResults.txt', 'w')
         file.write("%s\n%s\n%s" % (self.customer_code, self.email_type, self.email.Body))
@@ -409,17 +404,19 @@ class Project438ActionEmail():
         message = self.email_data[1]
         address = self.email_data[4]
         loaded_by = self.remedy_data[0]
+        date = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
         csv = CSV("G:\\Customer Reporting\\438-DVS\\Automation\\Emails\\Reports\\", "email_reporting.csv", "a",
                   ["Subject", "Customer Code", "Action", "Name", "Email", "Phone", "Address", "Message", "Date", "TCC Staff"])
 
-        csv.writerow([subject, self.customer_code, self.email_type, name, email, phone, address, message, datetime.datetime.now(), loaded_by])
+        csv.writerow([subject, self.customer_code, self.email_type, name, email, phone, address, message, date, loaded_by])
 
     def process_email(self):
         """Files the email to the correct folder based on self.email_type."""
 
-        self.email.FlagRequest = "Mark Complete"
-        self.email.Subject = "%s - %s" % (self.customer_code, self.email.Subject)
+        if "Follow" not in self.email_type:
+            self.email.FlagRequest = "Mark Complete"
+            self.email.Subject = "%s - %s" % (self.customer_code, self.email.Subject)
 
         if "Sales Lead" in self.email_type:
             self.email.Move(self.outlook.sales)
@@ -429,17 +426,15 @@ class Project438ActionEmail():
             self.email.Move(self.outlook.filters)
         elif "Spare" in self.email_type:
             self.email.Move(self.outlook.spare_parts)
+        elif "Follow" in self.email_type:
+            self.email.Move(self.outlook.follow_up)
+            self.close()
         else:
             self.email.Move(self.outlook.general)
 
     ## CLOSE METHOD
     def close(self):
         """Closes the browser, notepad, and ends the script"""
-
-        try:
-            webbrowser.close()
-        except:
-            pass
 
         self.driver.close()
         self.driver.quit()

@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>c70d0140-cf49-4e1e-aea2-99c24ce7dc2b</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Project_438_Emails\main_action_email.py</StartupFile>
+    <StartupFile>app\PDF\readPDF.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -35,18 +35,16 @@
     <Compile Include="app\Outlook\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="app\PDF\readPDF.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\PDF\__init__.py" />
     <Compile Include="app\Selenium\chrome.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="app\Selenium\__init__.py" />
     <Compile Include="app\__init__.py" />
-    <Compile Include="Project_438_Emails\main_action_email.py" />
-    <Compile Include="Project_438_Emails\main_return_data.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Project_438_Emails\main_action_email.spec">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="438\main_action_email.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="requirements.txt" />
@@ -54,8 +52,9 @@
   <ItemGroup>
     <Folder Include="app\CSV\" />
     <Folder Include="app\functions\" />
-    <Folder Include="Project_438_Emails\" />
+    <Folder Include="438\" />
     <Folder Include="app\" />
+    <Folder Include="app\PDF\" />
     <Folder Include="app\Outlook\" />
     <Folder Include="app\Selenium\" />
   </ItemGroup>

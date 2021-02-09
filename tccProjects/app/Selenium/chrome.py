@@ -9,6 +9,7 @@ class ChromeDriver():
 
         chromeOptions = webdriver.ChromeOptions() 
         chromeOptions.add_argument("--remote-debugging-port=9222") 
+        chromeOptions.add_experimental_option('excludeSwitches', ['enable-logging'])   
         
         try:
             self.driver = webdriver.Chrome("G:\\Automation\\Selenium\\chromedriver.exe", chrome_options=chromeOptions)

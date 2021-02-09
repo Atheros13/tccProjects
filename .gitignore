@@ -339,3 +339,5 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 /tccProjects/env
+/tccProjects/Project_438_Emails/build/main_action_email
+/tccProjects/438/build/main_action_email
