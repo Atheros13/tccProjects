@@ -6,9 +6,13 @@ class ReadPDF():
 
     def __init__(self, filepath, filename, *args, **kwargs):
 
-        pass
+        self.content = str(parser.from_file("%s%s" % (filepath, filename))["content"])
+        self.content_lines = self.build_content_lines()
 
+    def build_content_lines():
 
-## TEST ##
-parsed = str(parser.from_file('G:\\Michael Atheros - Work\\Frucor.PDF')["content"]).split()
-print(parsed.split("\n"))
+        lines = []
+        for line in self.content.split("\n"):
+            if line not in ["", " "]:
+                lines.append(line)
+        return lines

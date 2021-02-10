@@ -24,6 +24,7 @@
   <ItemGroup>
     <Compile Include="app\CSV\csv.py" />
     <Compile Include="app\CSV\__init__.py" />
+    <Compile Include="app\Excel\__init__.py" />
     <Compile Include="app\functions\functions.py">
       <SubType>Code</SubType>
     </Compile>
@@ -54,6 +55,7 @@
     <Folder Include="app\functions\" />
     <Folder Include="438\" />
     <Folder Include="app\" />
+    <Folder Include="app\Excel\" />
     <Folder Include="app\PDF\" />
     <Folder Include="app\Outlook\" />
     <Folder Include="app\Selenium\" />
