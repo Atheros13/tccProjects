@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>c70d0140-cf49-4e1e-aea2-99c24ce7dc2b</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>app\PDF\readPDF.py</StartupFile>
+    <StartupFile>app\WinAuto\winAutoImport.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -12,6 +12,7 @@
     <Name>tccProjects</Name>
     <RootNamespace>tccProjects</RootNamespace>
     <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
+    <SuppressConfigureTestFrameworkPrompt>true</SuppressConfigureTestFrameworkPrompt>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,6 +23,13 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="190\email_cancellation.py" />
+    <Compile Include="190\main.py" />
+    <Compile Include="190\reg_automate.py" />
+    <Compile Include="190\reg_chip_check.py" />
+    <Compile Include="190\reg_open_email.py" />
+    <Compile Include="190\reg_pdf_split.py" />
+    <Compile Include="190\test.py" />
     <Compile Include="app\CSV\csv.py" />
     <Compile Include="app\CSV\__init__.py" />
     <Compile Include="app\Excel\__init__.py" />
@@ -44,18 +52,26 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="app\Selenium\__init__.py" />
+    <Compile Include="app\WinAuto\winAutoImport.py" />
+    <Compile Include="app\WinAuto\winAuto.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="app\__init__.py" />
     <Compile Include="438\main_action_email.py" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="190\reg_open_email.spec" />
+    <Content Include="190\reg_pdf_split.spec" />
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="190\" />
     <Folder Include="app\CSV\" />
     <Folder Include="app\functions\" />
     <Folder Include="438\" />
     <Folder Include="app\" />
     <Folder Include="app\Excel\" />
+    <Folder Include="app\WinAuto\" />
     <Folder Include="app\PDF\" />
     <Folder Include="app\Outlook\" />
     <Folder Include="app\Selenium\" />
