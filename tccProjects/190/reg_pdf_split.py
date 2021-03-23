@@ -99,7 +99,20 @@ email_count = 1
 count = 1
 while True:
 
-    email = inbox.Items.GetLast()
+    try:
+        e_first = inbox.Items.GetFirst()
+    except:
+        break
+
+    e_last = inbox.Items.GetLast()
+
+    try:
+        if e_first.ReceivedTime < e_last.ReceivedTime:
+            email = e_first
+        else:
+            email = e_last
+    except:
+        email = e_first
 
     try:
         if email.SenderEmailType == "EX":
@@ -114,6 +127,11 @@ while True:
         continue
 
     human_check = False
+    ignore_att = False
+    for att in email.Attachments:
+        if ".pdf" in att.FileName or ".tif" in att.FileName:
+            ignore_att = True
+
     for att in email.Attachments:
 
         if '.tif' in att.FileName:
@@ -147,7 +165,7 @@ while True:
 
                     message = "ORIGINAL DATETIME: %s\nORIGINAL SUBJECT: %s\nORIGINAL ADDRESS: %s\n\nORIGINAL EMAIL: %s" % (email.ReceivedTime, email.Subject, address, email.Body)
 
-                    print("Email: %s TIF: %s" % (email_count, count))
+                    print("Email: %s TIF: %s DATETIME: %s" % (email_count, count, email.ReceivedTime))
                     count += 1
                     SendEmail(att_path, message)
 
@@ -178,7 +196,7 @@ while True:
 
                     message = "ORIGINAL DATETIME: %s\nORIGINAL SUBJECT: %s\nORIGINAL ADDRESS: %s\n\nORIGINAL EMAIL: %s" % (email.ReceivedTime, email.Subject, address, email.Body)
 
-                    print("Email: %s PDF: %s" % (email_count, count))
+                    print("Email: %s PDF: %s DATETIME: %s" % (email_count, count, email.ReceivedTime))
                     count += 1
                     SendEmail(att_path, message)
 
@@ -187,7 +205,7 @@ while True:
                 human_check = True
                 break
 
-        elif '.jpg' in att.Filename:
+        elif '.jpg' in att.Filename and not ignore_att:
 
             att.SaveAsFile("G:\\Customer Reporting\\190 - NZCAR\\Automation\\CODE\\EMAIL\\temp.jpg")
             att_path = "G:\\Customer Reporting\\190 - NZCAR\\Automation\\CODE\\EMAIL\\temp.jpg"
@@ -196,11 +214,11 @@ while True:
             except:
                 message = "ORIGINAL DATETIME: %s\nORIGINAL SUBJECT: %s\nORIGINAL ADDRESS: %s\n\nORIGINAL EMAIL: %s" % ("Unknown", email.Subject, address, email.Body)
 
-            print("Email: %s JPG: %s" % (email_count, count))
+            print("Email: %s JPG: %s DATETIME: %s" % (email_count, count, email.ReceivedTime))
             count += 1
             SendEmail(att_path, message)
 
-        elif '.jpeg' in att.Filename:
+        elif '.jpeg' in att.Filename and not ignore_att:
 
             att.SaveAsFile("G:\\Customer Reporting\\190 - NZCAR\\Automation\\CODE\\EMAIL\\temp.jpeg")
             att_path = "G:\\Customer Reporting\\190 - NZCAR\\Automation\\CODE\\EMAIL\\temp.jpeg"
@@ -209,11 +227,11 @@ while True:
             except:
                 message = "ORIGINAL DATETIME: %s\nORIGINAL SUBJECT: %s\nORIGINAL ADDRESS: %s\n\nORIGINAL EMAIL: %s" % ("Unknown", email.Subject, address, email.Body)
 
-            print("Email: %s JPEG: %s" % (email_count, count))
+            print("Email: %s JPEG: %s DATETIME: %s" % (email_count, count, email.ReceivedTime))
             count += 1
             SendEmail(att_path, message)
 
-        elif '.png' in att.Filename:
+        elif '.png' in att.Filename and not ignore_att:
 
             att.SaveAsFile("G:\\Customer Reporting\\190 - NZCAR\\Automation\\CODE\\EMAIL\\temp.png")
             att_path = "G:\\Customer Reporting\\190 - NZCAR\\Automation\\CODE\\EMAIL\\temp.png"
@@ -222,11 +240,11 @@ while True:
             except:
                 message = "ORIGINAL DATETIME: %s\nORIGINAL SUBJECT: %s\nORIGINAL ADDRESS: %s\n\nORIGINAL EMAIL: %s" % ("Unknown", email.Subject, address, email.Body)
 
-            print("Email: %s PNG: %s" % (email_count, count))
+            print("Email: %s PNG: %s DATETIME: %s" % (email_count, count, email.ReceivedTime))
             count += 1
             SendEmail(att_path, message)
 
-        elif '.gif' in att.Filename:
+        elif '.gif' in att.Filename and not ignore_att:
 
             att.SaveAsFile("G:\\Customer Reporting\\190 - NZCAR\\Automation\\CODE\\EMAIL\\temp.gif")
             att_path = "G:\\Customer Reporting\\190 - NZCAR\\Automation\\CODE\\EMAIL\\temp.gif"
@@ -235,15 +253,16 @@ while True:
             except:
                 message = "ORIGINAL DATETIME: %s\nORIGINAL SUBJECT: %s\nORIGINAL ADDRESS: %s\n\nORIGINAL EMAIL: %s" % ("Unknown", email.Subject, address, email.Body)
 
-            print("Email: %s GIF: %s" % (email_count, count))
+            print("Email: %s GIF: %s DATETIME: %s" % (email_count, count, email.ReceivedTime))
             count += 1
             SendEmail(att_path, message)
+        elif ignore_att:
+            continue
         else:
 
             print("Email: %s Moved to Human Check" % email_count, att.FileName)
             human_check = True
             continue
-
 
     if human_check:
         email.UnRead = True
@@ -252,13 +271,11 @@ while True:
         email.UnRead = False
         email.Move(complete)
     
-    if email_count >= 30:
+    if email_count >= 250:
         print("ENDING")
         time.sleep(10)
         sys.exit(0)
     else:
         email_count += 1
 
-print("ENDING")
-time.sleep(10)
-sys.exit(0)
+sys.stdout.write("%s %s" % (email_count, count))

@@ -9,14 +9,15 @@ class WinAutoImport():
 
     """ """
 
-    def __init__(self, *args, mapping_filepath=None, **kwargs):
+    def __init__(self, *args, mapping_filepath=None, clear=False, **kwargs):
 
         self.mapping_filepath = mapping_filepath
 
-        self.remedy_supervisor()
+        if clear:
+            self.remedy_supervisor()
 
-        #self.login()
-        #self.open_mapping()
+        self.login()
+        self.open_mapping()
 
     def remedy_supervisor(self):
 
@@ -48,11 +49,19 @@ class WinAutoImport():
 
         imp = self.app.window(title_re="BMC Remedy Data Import")
         imp["Open an existing mapping file."].click()
-
+        time.sleep(5)
         imp["File name:Edit"].set_text(self.mapping_filepath)
         imp.Button15.click()
-        #print(imp.print_control_identifiers())
+        imp["Start importing records from the import file"].click()
+        time.sleep(5)
+        imp["OKButton"].click()
+        try:
+            imp.type_keys("%{F4}")
+        except:
+            pass
+        try:
+            imp.send_keys("{VK_MENU}{F4}")
+        except:
+            pass
 
-
-## ENGINE ##
-WinAutoImport(mapping_filepath="G:\Customer Reporting\\190 - NZCAR\Automation\CODE\IMPORT\email_cancellation.armx")
+        

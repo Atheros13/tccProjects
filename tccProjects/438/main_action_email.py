@@ -4,7 +4,6 @@ This is the primary project program. It is triggered by a button in the 438 Reme
 extracts data, opens and logs into Eaccounts, then processes data, and waits for operator 
 actions. Once done, it records a report in a .csv for TCC. 
 """
-
 ## PYTHON IMPORTS
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
@@ -16,7 +15,7 @@ import webbrowser
 
 ## APP IMPORTS 
 from app.CSV.csv import CSV
-from app.Outlook.outlook438 import Outlook438
+from app.Outlook.outlook438 import Outlook438WebsiteLeads as Outlook438
 from app.Selenium.chrome import ChromeDriver
 
 from app.functions import is_integer
@@ -56,7 +55,7 @@ class Project438ActionEmail():
         ## PROCESS
         # if the operator has actioned in 10 minutes, saves a record as a .txt,
         # saves a complete record in a .csv, and files the email
-        if self.customer_code == None and self.email_type == None:
+        if self.customer_code == None:
             self.close()
         else:
             self.process_data()
@@ -183,6 +182,7 @@ class Project438ActionEmail():
                             wanted3 = message[140:]
                     else:
                         wanted1 = message
+
             elif 'I have a question about...' in line and subject == 'New submission from DVS Contact Us':
 
                 message = lines[i+1].strip()
@@ -193,7 +193,7 @@ class Project438ActionEmail():
 
                 best_time = lines[i+1].strip()
 
-            elif 'Your Message' in line and subject == 'New submission from DVS Contact Us':
+            elif 'Your Message' in line and subject in ['New submission from DVS Contact Us', 'New submission from DVS Upgrade Enquiry']:
 
                 message = lines[i+1].strip()
                 if message != "":
@@ -226,7 +226,10 @@ class Project438ActionEmail():
         loaded_by = self.remedy_data[0]
 
         file = open('G:\\Customer Reporting\\438-DVS\\Automation\\Emails\\%s.txt' % loaded_by, 'w')
-        file.write(notepad)
+        try:
+            file.write(notepad)
+        except:
+            file.write("Check email for details - there is a non-english character that won't show up on Notepad\nThe Automation should still work though.")
         file.close()
 
         webbrowser.open('G:\\Customer Reporting\\438-DVS\\Automation\\Emails\\%s.txt' % loaded_by)
@@ -261,7 +264,13 @@ class Project438ActionEmail():
         self.driver.find_element_by_name('Login').click()
         time.sleep(0.5)
         self.driver.find_element_by_class_name("MENU-BUTTON").click()
-        self.driver.find_element_by_name("Load_Prospect").click()
+
+        while True:
+            try:
+                self.driver.find_element_by_name("Load_Prospect").click()
+                break
+            except:
+                pass
 
     def driver_prospectInput(self):
         """Enters email_data into Prospect and does a search for the address."""
@@ -441,4 +450,5 @@ class Project438ActionEmail():
         sys.exit(0)
 
 ## ENGINE ##
+
 Project438ActionEmail()

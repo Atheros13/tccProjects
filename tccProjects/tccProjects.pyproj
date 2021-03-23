@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>c70d0140-cf49-4e1e-aea2-99c24ce7dc2b</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>app\WinAuto\winAutoImport.py</StartupFile>
+    <StartupFile>562\main.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -25,13 +25,41 @@
   <ItemGroup>
     <Compile Include="190\email_cancellation.py" />
     <Compile Include="190\main.py" />
+    <Compile Include="190\main_import_annual_cancellation.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="190\reg_automate.py" />
     <Compile Include="190\reg_chip_check.py" />
     <Compile Include="190\reg_open_email.py" />
     <Compile Include="190\reg_pdf_split.py" />
-    <Compile Include="190\test.py" />
+    <Compile Include="190\email_cancellation.py" />
+    <Compile Include="190\main.py" />
+    <Compile Include="190\reg_automate.py" />
+    <Compile Include="190\reg_chip_check.py" />
+    <Compile Include="190\reg_open_email.py" />
+    <Compile Include="190\reg_pdf_split.py" />
+    <Compile Include="190\single_count.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="190\Tasks\canterburyDead.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="190\Tests\test.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="562\main.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="562\__init__.py" />
+    <Compile Include="564\__init__.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\convert564.py" />
     <Compile Include="app\CSV\csv.py" />
     <Compile Include="app\CSV\__init__.py" />
+    <Compile Include="app\Excel\excel.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="app\Excel\__init__.py" />
     <Compile Include="app\functions\functions.py">
       <SubType>Code</SubType>
@@ -44,28 +72,140 @@
     <Compile Include="app\Outlook\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="app\PDF\readPDF.py">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="app\PDF\readPDF.py" />
     <Compile Include="app\PDF\__init__.py" />
     <Compile Include="app\Selenium\chrome.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="app\Selenium\__init__.py" />
+    <Compile Include="app\WinAuto\winAutoRemedy.py" />
     <Compile Include="app\WinAuto\winAutoImport.py" />
     <Compile Include="app\WinAuto\winAuto.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="app\__init__.py" />
     <Compile Include="438\main_action_email.py" />
+    <Compile Include="Operators\QuickSign\main.py" />
+    <Compile Include="Operators\QuickSign\quickSign.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\QuickSign\quickSignGUI.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Operators\QuickSign\__init__.py" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="190\build\reg_open_email\Analysis-00.toc" />
+    <Content Include="190\build\reg_open_email\base_library.zip" />
+    <Content Include="190\build\reg_open_email\EXE-00.toc" />
+    <Content Include="190\build\reg_open_email\localpycos\struct.pyo" />
+    <Content Include="190\build\reg_open_email\PKG-00.pkg" />
+    <Content Include="190\build\reg_open_email\PKG-00.toc" />
+    <Content Include="190\build\reg_open_email\PYZ-00.pyz" />
+    <Content Include="190\build\reg_open_email\PYZ-00.toc" />
+    <Content Include="190\build\reg_open_email\reg_open_email.exe.manifest" />
+    <Content Include="190\build\reg_open_email\warn-reg_open_email.txt" />
+    <Content Include="190\build\reg_open_email\xref-reg_open_email.html" />
+    <Content Include="190\build\reg_pdf_split\Analysis-00.toc" />
+    <Content Include="190\build\reg_pdf_split\base_library.zip" />
+    <Content Include="190\build\reg_pdf_split\EXE-00.toc" />
+    <Content Include="190\build\reg_pdf_split\localpycos\struct.pyo" />
+    <Content Include="190\build\reg_pdf_split\PKG-00.pkg" />
+    <Content Include="190\build\reg_pdf_split\PKG-00.toc" />
+    <Content Include="190\build\reg_pdf_split\PYZ-00.pyz" />
+    <Content Include="190\build\reg_pdf_split\PYZ-00.toc" />
+    <Content Include="190\build\reg_pdf_split\reg_pdf_split.exe.manifest" />
+    <Content Include="190\build\reg_pdf_split\Tree-00.toc" />
+    <Content Include="190\build\reg_pdf_split\Tree-01.toc" />
+    <Content Include="190\build\reg_pdf_split\Tree-02.toc" />
+    <Content Include="190\build\reg_pdf_split\warn-reg_pdf_split.txt" />
+    <Content Include="190\build\reg_pdf_split\xref-reg_pdf_split.html" />
+    <Content Include="190\build\test\Analysis-00.toc" />
+    <Content Include="190\build\test\base_library.zip" />
+    <Content Include="190\build\test\COLLECT-00.toc" />
+    <Content Include="190\build\test\EXE-00.toc" />
+    <Content Include="190\build\test\localpycos\struct.pyo" />
+    <Content Include="190\build\test\PKG-00.pkg" />
+    <Content Include="190\build\test\PKG-00.toc" />
+    <Content Include="190\build\test\PYZ-00.pyz" />
+    <Content Include="190\build\test\PYZ-00.toc" />
+    <Content Include="190\build\test\test.exe" />
+    <Content Include="190\build\test\test.exe.manifest" />
+    <Content Include="190\build\test\Tree-00.toc" />
+    <Content Include="190\build\test\Tree-01.toc" />
+    <Content Include="190\build\test\Tree-02.toc" />
+    <Content Include="190\build\test\warn-test.txt" />
+    <Content Include="190\build\test\xref-test.html" />
     <Content Include="190\reg_open_email.spec" />
     <Content Include="190\reg_pdf_split.spec" />
+    <Content Include="190\build\reg_open_email\Analysis-00.toc" />
+    <Content Include="190\build\reg_open_email\base_library.zip" />
+    <Content Include="190\build\reg_open_email\EXE-00.toc" />
+    <Content Include="190\build\reg_open_email\localpycos\struct.pyo" />
+    <Content Include="190\build\reg_open_email\PKG-00.pkg" />
+    <Content Include="190\build\reg_open_email\PKG-00.toc" />
+    <Content Include="190\build\reg_open_email\PYZ-00.pyz" />
+    <Content Include="190\build\reg_open_email\PYZ-00.toc" />
+    <Content Include="190\build\reg_open_email\reg_open_email.exe.manifest" />
+    <Content Include="190\build\reg_open_email\warn-reg_open_email.txt" />
+    <Content Include="190\build\reg_open_email\xref-reg_open_email.html" />
+    <Content Include="190\build\reg_pdf_split\Analysis-00.toc" />
+    <Content Include="190\build\reg_pdf_split\base_library.zip" />
+    <Content Include="190\build\reg_pdf_split\EXE-00.toc" />
+    <Content Include="190\build\reg_pdf_split\localpycos\struct.pyo" />
+    <Content Include="190\build\reg_pdf_split\PKG-00.pkg" />
+    <Content Include="190\build\reg_pdf_split\PKG-00.toc" />
+    <Content Include="190\build\reg_pdf_split\PYZ-00.pyz" />
+    <Content Include="190\build\reg_pdf_split\PYZ-00.toc" />
+    <Content Include="190\build\reg_pdf_split\reg_pdf_split.exe.manifest" />
+    <Content Include="190\build\reg_pdf_split\Tree-00.toc" />
+    <Content Include="190\build\reg_pdf_split\Tree-01.toc" />
+    <Content Include="190\build\reg_pdf_split\Tree-02.toc" />
+    <Content Include="190\build\reg_pdf_split\warn-reg_pdf_split.txt" />
+    <Content Include="190\build\reg_pdf_split\xref-reg_pdf_split.html" />
+    <Content Include="190\build\test\Analysis-00.toc" />
+    <Content Include="190\build\test\base_library.zip" />
+    <Content Include="190\build\test\COLLECT-00.toc" />
+    <Content Include="190\build\test\EXE-00.toc" />
+    <Content Include="190\build\test\localpycos\struct.pyo" />
+    <Content Include="190\build\test\PKG-00.pkg" />
+    <Content Include="190\build\test\PKG-00.toc" />
+    <Content Include="190\build\test\PYZ-00.pyz" />
+    <Content Include="190\build\test\PYZ-00.toc" />
+    <Content Include="190\build\test\test.exe" />
+    <Content Include="190\build\test\test.exe.manifest" />
+    <Content Include="190\build\test\Tree-00.toc" />
+    <Content Include="190\build\test\Tree-01.toc" />
+    <Content Include="190\build\test\Tree-02.toc" />
+    <Content Include="190\build\test\warn-test.txt" />
+    <Content Include="190\build\test\xref-test.html" />
+    <Content Include="190\reg_open_email.spec" />
+    <Content Include="190\reg_pdf_split.spec" />
+    <Content Include="438\main_action_email.spec" />
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="190\" />
+    <Folder Include="190\build\" />
+    <Folder Include="190\build\reg_open_email\" />
+    <Folder Include="190\build\reg_open_email\localpycos\" />
+    <Folder Include="190\build\reg_pdf_split\" />
+    <Folder Include="190\build\reg_pdf_split\localpycos\" />
+    <Folder Include="190\build\test\" />
+    <Folder Include="190\build\test\localpycos\" />
+    <Folder Include="190\dist\" />
+    <Folder Include="190\Tests\" />
+    <Folder Include="190\Tasks\" />
+    <Folder Include="190\__pycache__\" />
+    <Folder Include="190\" />
+    <Folder Include="190\build\" />
+    <Folder Include="190\build\reg_open_email\" />
+    <Folder Include="190\build\reg_open_email\localpycos\" />
+    <Folder Include="190\build\reg_pdf_split\" />
+    <Folder Include="190\build\reg_pdf_split\localpycos\" />
+    <Folder Include="190\build\test\" />
+    <Folder Include="190\build\test\localpycos\" />
+    <Folder Include="190\dist\" />
     <Folder Include="app\CSV\" />
     <Folder Include="app\functions\" />
     <Folder Include="438\" />
@@ -75,6 +215,11 @@
     <Folder Include="app\PDF\" />
     <Folder Include="app\Outlook\" />
     <Folder Include="app\Selenium\" />
+    <Folder Include="Import DB\" />
+    <Folder Include="564\" />
+    <Folder Include="562\" />
+    <Folder Include="Operators\" />
+    <Folder Include="Operators\QuickSign\" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">

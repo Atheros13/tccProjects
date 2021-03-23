@@ -4,10 +4,10 @@ block_cipher = None
 
 
 a = Analysis(['reg_open_email.py'],
-             pathex=['C:\\Users\\914\\source\\repos\\AutomateWebForms\\AutomateWebForms\\190\\Form'],
+             pathex=['C:\\Users\\914\\source\\repos\\tccProjects\\tccProjects\\190'],
              binaries=[],
              datas=[],
-             hiddenimports=[],
+             hiddenimports=['win32timezone'],
              hookspath=[],
              runtime_hooks=[],
              excludes=[],

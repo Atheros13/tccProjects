@@ -33,15 +33,11 @@ dirpath = "G:\\Customer Reporting\\190 - NZCAR\\Automation\\PDF\\"
 ## OPEN INBOX
 outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
 
-inbox = None
-complete = None
-human = None
-
 for r in outlook.Folders:
     if r.name == "info@animalregister.co.nz":
 
         inbox = r.Folders.Item("**REGISTRATIONS").Folders.Item("SINGLE REGISTRATIONS")
-        complete = r.Folders.Item("**REGISTRATIONS").Folders.Item("COMPLETED")
+        complete = r.Folders.Item("**REGISTRATIONS").Folders.Item("FILED SINGLE")
         human = r.Folders.Item("**HUMAN CHECK")
 
 
@@ -51,7 +47,14 @@ if inbox == None:
 ## 
 while True:
     snip = "NO"
-    email = inbox.Items.GetLast() # 
+
+    e_first = inbox.Items.GetFirst()
+    e_last = inbox.Items.GetLast()
+
+    if e_first.ReceivedTime < e_last.ReceivedTime:
+        email = e_first
+    else:
+        email = e_last
 
     email_body = email.Body
     if 'ORIGINAL ADDRESS: ' in email.Body:

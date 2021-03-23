@@ -17,7 +17,7 @@ class Outlook():
     def get_email(self):
         """Returns an email from the self.inbox folder."""
 
-        for email in self.inbox.Items.reverse():
+        for email in self.inbox.Items:
             if self.check_email(email):
                 return email
 
