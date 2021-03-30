@@ -1,5 +1,3 @@
-from PyPDF2 import PdfFileWriter, PdfFileReader
-
 ## PYTHON IMPORTS ##
 import time
 from selenium import webdriver
@@ -13,7 +11,6 @@ from os.path import isfile, join
 
 import csv
 import datetime
-import img2pdf
 import os
 import sys
 import shutil
@@ -24,42 +21,67 @@ import win32com.client
 
 import webbrowser
 
-## CLASSES
+## SYS ARGUMENTS ##
 
-class SendEmail():
+## FUNCTIONS
 
-    #some constants (from http://msdn.microsoft.com/en-us/library/office/aa219371%28v=office.11%29.aspx)
-    olFormatHTML = 2
-    olFormatPlain = 1
-    olFormatRichText = 3
-    olFormatUnspecified = 0
-    olMailItem = 0x0
+def is_integer(n):
+    try:
+        float(n)
+    except ValueError:
+        return False
+    else:
+        return float(n).is_integer()
 
-    def __init__(self, *args, **kwargs):
+def is_phone(number):
 
-        self.attachment = "G:\\Customer Reporting\\190 - NZCAR\\Automation\\TASKS\\att.pdf"
-        self.message = "Test"
-        self.outlook = win32com.client.Dispatch("Outlook.Application")
+    count = 0
+    for n in number:
 
-        for account in self.outlook.Session.Accounts:
-            if account.DisplayName == "info@animalregister.co.nz":
-                self.newMail = self.outlook.CreateItem(0)
-                self.newMail._oleobj_.Invoke(*(64209, 0, 8, 0, account))
-                self.newMail.Subject = "AUTOMATION Registration"
-                self.newMail.BodyFormat = self.olFormatRichText
-                self.newMail.Body = self.message
-                self.newMail.Attachments.Add(self.attachment)
+        if count > 8:
+            return True
+        if n == "+":
+            continue
+        if is_integer(n):
+            count += 1
+    return False
 
-                self.newMail.SaveAs(Path="G:\\Customer Reporting\\190 - NZCAR\\Automation\\TASKS\\test.msg")
+def open_webpage(address):
 
-class OpenEmail():
+    ## OPEN DRIVER
+    username = "info@thecallcentre.co.nz"
+    password = "TCC123456!"
 
-    def __init__(self, *args, **kwargs):
+    ## LOGIN TO DVS AND GO TO LOAD PROSPECT
+    driver.get(address)  
+    demo = True
+    while demo:
 
-        outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
-        msg = outlook.OpenSharedItem("G:\\Customer Reporting\\190 - NZCAR\\Automation\\TASKS\\test.msg")
-        print(msg.Body)
+        try:
+            driver.find_element_by_id("MemberLoginForm_LoginForm_Email").send_keys(username)
+            driver.find_element_by_id("MemberLoginForm_LoginForm_Password").send_keys(password)
+            time.sleep(0.9)
+            driver.find_element_by_name('action_doLogin').click()
+            demo = False
+        except:
+            pass
 
+        time.sleep(3)    
 
-## ENGINE ##
-OpenEmail()
+def process_email(email, complete):
+
+    email.UnRead = False
+    email.Move(complete)
+
+## GLOBAL ##
+driver = webdriver.Chrome(ChromeDriverManager().install())
+
+## OPEN UPDATE, 
+open_webpage("https://www-uat-animalregister.msapp.co.nz/implanter/dashboard/register") 
+
+# microchip check
+driver.find_element_by_id("microchipNumber").send_keys("123451234512345")
+#driver.find_element_by_id("MainContent_ChipCrossCheck1").send_keys(chip[:3])
+
+## TESTING
+time.sleep(100)
