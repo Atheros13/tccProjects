@@ -1,22 +1,26 @@
 ## IMPORTS ##
 import datetime
-
+import sys
+import webbrowser
 
 ## APP IMPORTS ##
 from app.PDF.readPDF import ReadPDF
 
-
 ## CLASS ##
 class Main():
 
-    def __init__(self, *args, language=None, timedate=None, earliest=None, latest=None, duration=None, **kwargs):
+    def __init__(self, *args, language=None, timedate=None, earliest=None, latest=None, duration=None, operator=None, **kwargs):
 
         #
         self.language = language
         self.timedate = self.convert_timedate(timedate)
         self.earliest = self.convert_timedate(earliest)
         self.latest = self.convert_timedate(latest)
+        if self.earliest == self.latest:
+            self.earliest = None
+            self.latest = None
         self.duration = self.convert_duration(duration)
+        self.operator = operator
 
         #
         self.languages = self.build_languages()
@@ -25,12 +29,14 @@ class Main():
         self.bookings = self.build_bookings()
 
         # ENGINE
+        self.results = ""
         if language != None:
             results = self.process()
-
-        # TEST
-        if False:
-            self.test()
+            for box in results:
+                for r in box:
+                    self.results += r
+                self.results += "\n"
+        self.open_notepad()
 
     ## CONVERT ##
     def convert_timedate(self, timedate):
@@ -43,7 +49,7 @@ class Main():
         # FORMAT EXAMPLE "16/03/2021 1:19:26 pm"
         timedate = timedate.replace("am", "AM")
         timedate = timedate.replace("pm", "PM")
-        return datetime.datetime.strptime(timedate, '%d/%m/%Y %-I:%M:%S %p')
+        return datetime.datetime.strptime(timedate, '%d/%m/%Y %H:%M:%S %p')
 
     def convert_duration(self, duration):
 
@@ -205,8 +211,8 @@ class Main():
                     time = rows[i][:10]
                     time = time.replace("a.m.", "AM")
                     time = time.replace("p.m.", "PM")
-                    dt = '%s %s' % (date, time)
-                    #dt = datetime.datetime.strptime('%s %s' % (date, time), '%d %B %Y %I:%M %p')
+                    #dt = '%s %s' % (date, time)
+                    dt = datetime.datetime.strptime('%s %s' % (date, time), '%d %B %Y %I:%M %p')
                     language = rows[i+1]
                     interpreter = rows[i+2].upper()
                     if language in self.languages or language in self.language_groups:
@@ -243,7 +249,7 @@ class Main():
             results = []
             for data in interpreters:
                 results.append(self.process_interpreter_details(data))
-            return results
+            return [results]
 
         # No Time Flexibility
         if self.earliest == None:
@@ -256,24 +262,66 @@ class Main():
                 else:
                     clash = False
                     for booking in bookings:
-                        clash = self.check_clash(booking)
+                        if not clash:
+                            clash = self.check_clash(booking)
                     if not clash:
                         booked.append(self.process_interpreter_details(data, booking_notes=bookings))
-                return booked + not_booked
 
-        # Time Flexibility
+            return [booked, not_booked]
 
+        # Flexible
+        booked = []
+        flex_booked = []
+        not_booked = []
+        for data in interpreters:
+            bookings = self.search_bookings(data)
+            if bookings == None:
+                not_booked.append(self.process_interpreter_details(data))
+            else:
+                clash = False
+                # check best time clash
+                for booking in bookings:
+                    if not clash:
+                        clash = self.check_clash(booking)
+                if not clash:
+                    booked.append(self.process_interpreter_details(data, booking_notes=bookings))
+                else:
+                    # check flexible clash
+                    clash = False
+                    for booking in bookings:
+                        if not clash:
+                            clash = self.check_flexible_clash(booking)
+                    if not clash:
+                        flex_booked.append(self.process_interpreter_details(data, booking_notes=bookings, flex=True))
 
-    def process_interpreter_details(self, data, booking_notes=None):
+        return [booked, flex_booked, not_booked]
+
+    def process_interpreter_details(self, data, booking_notes=None, flex=False):
 
         lastname = data[0]
         firstname = data[1]
         number = data[2]
-        notes = data[3]
-        if booking_notes != None:
-            notes += " - "
 
-        return '%s %s %s - %s' % (lastname, firstname, number, notes)
+        message = "%s, %s - %s\n" % (lastname, firstname, number)
+
+        # Booking
+        if booking_notes != None:
+            if not flex:
+                message += "CURRENT BOOKINGS (Exact): "
+            else:
+                message += "CURRENT BOOKINGS (Flexibility): "
+
+            for b in booking_notes:
+                if b.date() == self.timedate.date():
+                    message += "%s, " % b.time()
+
+            message = message[:-2]
+            message += "\n"
+
+        # Notes
+        message += "NOTES: %s\n" % data[3]
+
+        return message
 
     ## SEARCH ##
     def search_bookings(self, data):
@@ -283,14 +331,25 @@ class Main():
         name1 = "%s %s" % (lastname, firstname)
         name2 = "%s %s" % (firstname, lastname)
 
+        bookings = []
         if name1 in self.bookings:
-            return self.bookings[name1]
+            for b in self.bookings[name1]:
+                if b.date() == self.timedate.date():
+                    bookings.append(b)
         elif name2 in self.bookings:
-            return self.bookings[name2]
+            for b in self.bookings[name2]:
+                if b.date() == self.timedate.date():
+                    bookings.append(b)
         elif lastname in self.bookings:
-            return self.bookings[lastname]
+            for b in self.bookings[lastname]:
+                if b.date() == self.timedate.date():
+                    bookings.append(b)
         elif firstname in self.bookings:
-            return self.bookings[firstname]
+            for b in self.bookings[firstname]:
+                if b.date() == self.timedate.date():
+                    bookings.append(b)
+        if bookings != []:
+            return bookings
         else:
             return None
 
@@ -303,62 +362,42 @@ class Main():
         request_start = self.timedate
         request_end = self.timedate + self.duration
 
-        if request_end <= booking_start or request_start >= booking_end:
+        if request_end <= booking_start:
             return False
-
+        elif request_start >= booking_end:
+            return False
         return True
 
-    ## TEST ##
-    def test(self):
+    def check_flexible_clash(self, booking):
 
-        for data in self.interpreters["Indian - PUNJABI"]:
+        booking_start = booking
+        booking_end = booking + datetime.timedelta(hours=1)
 
-            lastname = data[0]
-            firstname = data[1]
-            name1 = "%s %s" % (lastname, firstname)
-            name2 = "%s %s" % (firstname, lastname)
+        if booking_start >= (self.earliest + self.duration):
+            return False
+        if booking_end <= self.latest:
+            return False
+        return True
 
-            number = data[2]
-            notes = data[3]
+    ## OPEN ##
+    def open_notepad(self):
+        """Writes a .txt file of the email data and opens the file."""
 
-            if name1 in self.bookings:
-                print(firstname, lastname, number, notes, self.bookings[name1])
-            elif name2 in self.bookings:
-                print(firstname, lastname, number, notes, self.bookings[name2])
-            elif lastname in self.bookings:
-                print(firstname, lastname, number, notes, self.bookings[lastname])
-            elif firstname in self.bookings:
-                print(firstname, lastname, number, notes, self.bookings[firstname])
-            else:
-                print("NO BOOKINGS: %s %s %s %s" % (firstname, lastname, number, notes))
-        print('\n')
+        file = open('G:\\Customer Reporting\\562-CMDHB\\Automation\\%s.txt' % self.operator, 'w')
+        file.write(self.results)
+        file.close()
 
-    def test1(self):
-
-        man = "Samoan"
-
-        for data in self.interpreters[man]:
-
-            lastname = data[0]
-            firstname = data[1]
-            name1 = "%s %s" % (lastname, firstname)
-            name2 = "%s %s" % (firstname, lastname)
-
-            number = data[2]
-            notes = data[3]
-
-            if name1 in self.bookings:
-                print(name1, self.bookings[name1])
-                continue
-            elif name2 in self.bookings:
-                print(name2, self.bookings[name2])
-                continue
-            elif lastname in self.bookings:
-                print(lastname, self.bookings[lastname])
-                continue
-            elif firstname in self.bookings:
-                print(firstname, self.bookings[firstname])
-                continue
+        webbrowser.open('G:\\Customer Reporting\\562-CMDHB\\Automation\\%s.txt' % self.operator)
 
 ## ENGINE ##
-Main()
+
+raw_argv = sys.argv[1].replace("@", " ")
+argv = raw_argv.split("###")
+language = argv[0]
+timedate= argv[1]
+earliest = argv[2]
+latest = argv[3]
+duration = argv[4]
+operator = argv[5]
+
+Main(language=language, timedate=timedate, earliest=earliest, latest=latest, duration=duration, operator=operator)

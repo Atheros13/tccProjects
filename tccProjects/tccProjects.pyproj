@@ -4,7 +4,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>c70d0140-cf49-4e1e-aea2-99c24ce7dc2b</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>562\main.py</StartupFile>
+    <StartupFile>
+    </StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -181,7 +182,11 @@
     <Content Include="190\build\test\xref-test.html" />
     <Content Include="190\reg_open_email.spec" />
     <Content Include="190\reg_pdf_split.spec" />
+    <Content Include="562\language.csv">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="438\main_action_email.spec" />
+    <Content Include="562\main.spec" />
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -206,6 +211,7 @@
     <Folder Include="190\build\test\" />
     <Folder Include="190\build\test\localpycos\" />
     <Folder Include="190\dist\" />
+    <Folder Include="562\dist\" />
     <Folder Include="app\CSV\" />
     <Folder Include="app\functions\" />
     <Folder Include="438\" />
