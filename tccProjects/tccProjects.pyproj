@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>c70d0140-cf49-4e1e-aea2-99c24ce7dc2b</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>190\Tests\test.py</StartupFile>
+    <StartupFile>190\RegistrationAutomation.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -44,9 +44,7 @@
     <Compile Include="190\Tasks\canterburyDead.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="190\Tests\test.py">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="190\RegistrationAutomation.py" />
     <Compile Include="562\main.py">
       <SubType>Code</SubType>
     </Compile>
