@@ -53,44 +53,54 @@ class RegistrationAutomation():
             
             argv = sys.argv
 
+            raw_text = argv[1].replace("^^^", " ")
+            d = raw_text.split("##%%")
+
             self.username = "info@thecallcentre.co.nz"
             self.password = "TCC123456!"
 
-            self.chip = None
-            self.name = None
-            self.species = None
-            self.gender = None
-            self.desex = None
+            self.chip = d[0]
+            self.name = d[1]
+            self.species = d[2]
+            self.gender = d[3]
+            self.desex = d[4]
 
             self.purebred = True
-            self.birth_month = None
-            self.birth_year = None
-            self.breed_1 = None
-            self.breed_2 = None
-            self.colour = None
-            self.animal_notes = None
+            if d[5] != "":
+                self.purebred = False
+            self.birth_month = d[6]
+            self.birth_year = d[7]
+            self.breed_1 = d[8]
+            self.breed_2 = d[9]
+            self.colour1 = d[10]
+            self.colour2 = d[11]
+            self.colour = d[12]
+            self.animal_notes = d[13]
 
-            self.clinic = None
-            self.implanter = None
-            self.implantation_date = None
+            self.clinic = d[14]
+            self.implanter = d[15]
+            self.implantation_date = d[16]
 
-            self.email = None
-            self.no_email_reason = None
-            self.g_firstname = None
-            self.g_lastname = None
-            self.g_phone1 = None
-            self.g_phone2 = None
-            self.g_address = None
-            self.g_suburb = None
-            self.g_city = None
-            self.g_region = None
-            self.g_postcode = None
-            self.s_firstname = None
-            self.s_lastname = None
-            self.s_phone1 = None
-            self.s_phone2 = None
+            print("IMPLANTER DATE WILL NEED TO BE MANUALLY ENTERED IN CALENDAR:\n\n%s" % self.implantation_date)
 
-        else:
+            self.email = d[17]
+            self.no_email_reason = d[18]
+            self.g_firstname = d[19]
+            self.g_lastname = d[20]
+            self.g_phone1 = d[21]
+            self.g_phone2 = d[22]
+            self.g_streetnumber = d[23]
+            self.g_streetaddress = d[24]
+            self.g_suburb = d[25]
+            self.g_city = d[26]
+            self.g_region = d[27]
+            self.g_postcode = d[28]
+            self.s_firstname = d[29]
+            self.s_lastname = d[30]
+            self.s_phone1 = d[31]
+            self.s_phone2 = d[32]
+
+        if False:
 
             self.username = "info@thecallcentre.co.nz"
             self.password = "TCC123456!"
@@ -105,16 +115,17 @@ class RegistrationAutomation():
             self.birth_month = "January"
             self.birth_year = "2020"
             self.breed_1 = "German Shepherd"
-            self.breed_2 = None
+            self.breed_2 = ""
             self.colour1 = "Black"
             self.colour2 = "Tan"
-            self.animal_notes = None
+            self.colour = ""
+            self.animal_notes = ""
 
-            self.clinic = "Boop the snoot Daycare"
-            self.implanter = "God"
-            self.implantation_date = None
+            self.clinic = "Abyrose"
+            self.implanter = "Mike Wazowski"
+            self.implantation_date = ""
 
-            self.email = None
+            self.email = ""
             self.no_email_reason = "Because I said so"
             self.g_firstname = "Michael"
             self.g_lastname = "Atheros"
@@ -131,6 +142,10 @@ class RegistrationAutomation():
             self.s_phone1 = ""
             self.s_phone2 = ""
 
+    def process_address(self, *args):
+
+        pass
+
     ## WEBSITE ##
     def website_login(self):
         """Open driver, opens registration part of the CANZ website and signs in. """
@@ -138,7 +153,7 @@ class RegistrationAutomation():
 
         # Opens Driver and opens website
         self.driver = ChromeDriver().driver
-        self.driver.get("https://www-uat-animalregister.msapp.co.nz/implanter/dashboard/register")
+        self.driver.get("https://www.animalregister.co.nz/implanter/dashboard/register")
 
         # Waits for demo to be manually entered (while this is still working),
         # and signs in once this is done
@@ -166,7 +181,7 @@ class RegistrationAutomation():
 
         time.sleep(1)
         self.register_section_clinic()
-        self.driver.find_elements_by_class_name("c-button")[4].click()
+        #self.driver.find_elements_by_class_name("c-button")[4].click()
 
         time.sleep(1)
         self.register_section_guardian()
@@ -194,9 +209,9 @@ class RegistrationAutomation():
             self.driver.find_element_by_id("gender-option-Unknown").click()
         
         # desex
-        if self.desex:
+        if self.desex == "YES":
             self.driver.find_element_by_id("desexed-option-Yes").click()
-        elif not self.desex:
+        elif self.desex == "NO":
             self.driver.find_element_by_id("desexed-option-No").click()
         else:
             self.driver.find_element_by_id("desexed-option-Unknown").click()
@@ -217,7 +232,7 @@ class RegistrationAutomation():
 
         breed = self.driver.find_element_by_id("primaryBreedId")
         Select(breed).select_by_visible_text(self.breed_1)
-        if self.breed_2 != None:
+        if self.breed_2 != "":
             breed = self.driver.find_element_by_id("secondaryBreedId")
             Select(breed).select_by_visible_text(self.breed_2)
 
@@ -228,12 +243,15 @@ class RegistrationAutomation():
         Select(year).select_by_visible_text(self.birth_year)
 
         # colour & notes
-        colour = self.driver.find_element_by_id("primaryColourId")
-        Select(colour).select_by_visible_text(self.colour1)
-        if self.colour2 != None:
+        if self.colour1 != "":
+            colour = self.driver.find_element_by_id("primaryColourId")
+            Select(colour).select_by_visible_text(self.colour1)
+        if self.colour2 != "":
             colour = self.driver.find_element_by_id("secondaryColourId")
             Select(colour).select_by_visible_text(self.colour2)
-        if self.animal_notes != None:
+        if self.colour != "":
+            self.driver.find_element_by_id("colourDescription").send_keys(self.colour)
+        if self.animal_notes != "":
             self.driver.find_element_by_id("notesGeneral").send_keys(self.animal_notes)
 
     def register_section_clinic(self):
@@ -246,37 +264,57 @@ class RegistrationAutomation():
         self.driver.find_element_by_xpath("""//*[@id="v-Implantation-inputs"]/div/div/div[2]/div[1]/div/div[2]/input""").send_keys(self.implanter)
         
         # implant date: at the moment needs to be manually entered and waited till continue pushed
-        pass
+        check = False
+        while not check:
+            try:
+                self.driver.find_element_by_id("guardianFirstName").send_keys("")
+                check = True
+            except:
+                pass
 
     def register_section_guardian(self):
 
+        check_account = False
+
         # email
-        if self.no_email_reason == None:
+        if self.no_email_reason == "":
+            # enters email
             self.driver.find_element_by_id("guardianEmail").send_keys(self.email)
+            # moves to new field - gives time to check if email exists
+            self.driver.find_element_by_id("guardianFirstName").send_keys("")
+            time.sleep(1)
+            # tests to see if email exists, if it does not, the try will succeed
+            try:
+                self.driver.find_element_by_id("guardianSurname").send_keys("")
+            # if the try fails, then the email exists and there is no need to try entering the extra information
+            except:
+                check_account = True
         else:
             self.driver.find_element_by_id("noEmailAvailable").click()
             self.driver.find_element_by_id("noEmailReason").send_keys(self.no_email_reason)
 
-        # guardian name and number
-        self.driver.find_element_by_id("guardianFirstName").send_keys(self.g_firstname)
-        self.driver.find_element_by_id("guardianSurname").send_keys(self.g_lastname)
-        self.driver.find_element_by_id("guardianMobileNumber").send_keys(self.g_phone1)
-        self.driver.find_element_by_id("guardianAlternativeNumber").send_keys(self.g_phone2)
+        # runs if check_account != True
+        if not check_account:
+            # guardian name and number
+            self.driver.find_element_by_id("guardianFirstName").send_keys(self.g_firstname)
+            self.driver.find_element_by_id("guardianSurname").send_keys(self.g_lastname)
+            self.driver.find_element_by_id("guardianMobileNumber").send_keys(self.g_phone1)
+            self.driver.find_element_by_id("guardianAlternativeNumber").send_keys(self.g_phone2)
 
-        # guardian address - enter manually
-        self.driver.find_element_by_class_name("address-manual").click()
-        self.driver.find_element_by_id("StreetNumber").send_keys(self.g_streetnumber)
-        self.driver.find_element_by_id("Street").send_keys(self.g_streetaddress)
-        self.driver.find_element_by_id("Suburb").send_keys(self.g_suburb)
-        self.driver.find_element_by_id("City").send_keys(self.g_city)
-        self.driver.find_element_by_id("Region").send_keys(self.g_region)
-        self.driver.find_element_by_id("PostalCode").send_keys(self.g_postcode)
+            # guardian address - enter manually
+            self.driver.find_element_by_class_name("address-manual").click()
+            self.driver.find_element_by_id("StreetNumber").send_keys(self.g_streetnumber)
+            self.driver.find_element_by_id("Street").send_keys(self.g_streetaddress)
+            self.driver.find_element_by_id("Suburb").send_keys(self.g_suburb)
+            self.driver.find_element_by_id("City").send_keys(self.g_city)
+            self.driver.find_element_by_id("Region").send_keys(self.g_region)
+            self.driver.find_element_by_id("PostalCode").send_keys(self.g_postcode)
 
-        # alternate details
-        self.driver.find_element_by_id("secondaryContactFirstName").send_keys(self.s_firstname)
-        self.driver.find_element_by_id("secondaryContactSurname").send_keys(self.s_lastname)
-        self.driver.find_element_by_id("secondaryContactMobileNumber").send_keys(self.s_phone1)
-        self.driver.find_element_by_id("secondaryContactAlternativeNumber").send_keys(self.s_phone2)
+            # alternate details
+            self.driver.find_element_by_id("secondaryContactFirstName").send_keys(self.s_firstname)
+            self.driver.find_element_by_id("secondaryContactSurname").send_keys(self.s_lastname)
+            self.driver.find_element_by_id("secondaryContactMobileNumber").send_keys(self.s_phone1)
+            self.driver.find_element_by_id("secondaryContactAlternativeNumber").send_keys(self.s_phone2)
 
 ## ENGINE ##
 RegistrationAutomation()

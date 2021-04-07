@@ -45,6 +45,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="190\RegistrationAutomation.py" />
+    <Compile Include="438\main_monthly_email_count.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="562\main.py">
       <SubType>Code</SubType>
     </Compile>

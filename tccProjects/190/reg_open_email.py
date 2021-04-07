@@ -51,10 +51,19 @@ while True:
     e_first = inbox.Items.GetFirst()
     e_last = inbox.Items.GetLast()
 
-    if e_first.ReceivedTime < e_last.ReceivedTime:
-        email = e_first
-    else:
-        email = e_last
+    try:
+        if e_first.ReceivedTime < e_last.ReceivedTime:
+            email = e_first
+        else:
+            email = e_last
+    except:
+        try:
+            e_first.ReceivedTime
+            e_last.Move(human)
+            continue
+        except:
+            e_first.Move(human)
+            continue
 
     email_body = email.Body
     if 'ORIGINAL ADDRESS: ' in email.Body:
