@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>c70d0140-cf49-4e1e-aea2-99c24ce7dc2b</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>190\RegistrationAutomation.py</StartupFile>
+    <StartupFile>190\EmailRegistrationCount.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -38,7 +38,8 @@
     <Compile Include="190\reg_chip_check.py" />
     <Compile Include="190\reg_open_email.py" />
     <Compile Include="190\reg_pdf_split.py" />
-    <Compile Include="190\single_count.py">
+    <Compile Include="190\EmailRegistrationCount.py" />
+    <Compile Include="190\Tasks\single_count.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="190\Tasks\canterburyDead.py">

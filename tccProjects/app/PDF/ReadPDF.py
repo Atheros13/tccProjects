@@ -6,7 +6,7 @@ class ReadPDF():
 
     def __init__(self, filepath, filename, *args, **kwargs):
 
-        self.content = str(parser.from_file("%s%s" % (filepath, filename))["content"])
+        self.content = str(parser.from_file("%s%s" % (filepath, filename))["content"])#, "G:\\Automation\\Tika\\tika-server.jar")
 
     def build_content_lines():
 

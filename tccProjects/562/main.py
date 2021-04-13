@@ -1,5 +1,6 @@
 ## IMPORTS ##
 import datetime
+import json
 import sys
 import webbrowser
 
@@ -25,18 +26,22 @@ class Main():
         #
         self.languages = self.build_languages()
         self.language_groups = self.build_language_groups()
-        self.interpreters = self.build_interpreters()
-        self.bookings = self.build_bookings()
+        if self.language == None:
+            self.interpreters = self.build_interpreters()
+            self.bookings = self.build_bookings()
+            self.convert_to()
+        else:
+            self.convert_from()
 
         # ENGINE
-        self.results = ""
-        if language != None:
+        if self.language != None:
+            self.results = ""
             results = self.process()
             for box in results:
                 for r in box:
                     self.results += r
                 self.results += "\n"
-        self.open_notepad()
+            self.open_notepad()
 
     ## CONVERT ##
     def convert_timedate(self, timedate):
@@ -201,7 +206,6 @@ class Main():
         for row in raw_text.split("\n"):
             if row != "":
                 rows.append(row)
-
         # 
         date = None
         for i in range(len(rows)):
@@ -234,6 +238,23 @@ class Main():
                     pass
 
         return bookings
+
+    ## JSON ##
+    def convert_to(self):
+
+        with open('G:\\Customer Reporting\\562-CMDHB\\Automation\\interpreters.json', 'w') as outfile:
+            json.dump(self.interpreters, outfile)
+
+        with open("G:\\Customer Reporting\\562-CMDHB\\Automation\\bookings.json", 'w') as outfile:
+            json.dump(self.bookings, outfile)
+
+    def convert_from(self):
+
+         with open('G:\\Customer Reporting\\562-CMDHB\\Automation\\bookings.json', 'r') as outfile:
+            self.bookings = json.load(outfile)   
+
+         with open('G:\\Customer Reporting\\562-CMDHB\\Automation\\interpreters.json', 'r') as outfile:
+            self.interpreters = json.load(outfile)
 
     ## PROCESS ##
     def process(self):
@@ -390,14 +411,16 @@ class Main():
         webbrowser.open('G:\\Customer Reporting\\562-CMDHB\\Automation\\%s.txt' % self.operator)
 
 ## ENGINE ##
+if len(sys.argv) > 1:
+    raw_argv = sys.argv[1].replace("@", " ")
+    argv = raw_argv.split("###")
+    language = argv[0]
+    timedate= argv[1]
+    earliest = argv[2]
+    latest = argv[3]
+    duration = argv[4]
+    operator = argv[5]
 
-raw_argv = sys.argv[1].replace("@", " ")
-argv = raw_argv.split("###")
-language = argv[0]
-timedate= argv[1]
-earliest = argv[2]
-latest = argv[3]
-duration = argv[4]
-operator = argv[5]
-
-Main(language=language, timedate=timedate, earliest=earliest, latest=latest, duration=duration, operator=operator)
+    Main(language=language, timedate=timedate, earliest=earliest, latest=latest, duration=duration, operator=operator)
+else:
+    Main()
