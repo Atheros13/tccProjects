@@ -48,7 +48,11 @@ class EmailRegistrationCount():
         original_emails.Sort("[ReceivedTime]", True)
         for email in original_emails:
 
-            date = str(email.ReceivedTime).split()[0]
+            try:
+                date = str(email.ReceivedTime).split()[0]
+            except Exception:
+                print(Exception)
+                continue 
 
             if date >= self.date_from and date <= self.date_to:
 
@@ -76,7 +80,12 @@ class EmailRegistrationCount():
         single_emails.Sort("[ReceivedTime]", True)
         for email in single_emails:
 
-            date = str(email.ReceivedTime).split()[0]
+            try:
+                date = str(email.ReceivedTime).split()[0]
+            except Exception:
+                print(Exception)
+                continue 
+
             if date >= self.date_from and date <= self.date_to:
                 dict[date]['single'] += 1
 
@@ -89,7 +98,11 @@ class EmailRegistrationCount():
         filed_emails.Sort("[ReceivedTime]", True)
         for email in filed_emails:
 
-            date = str(email.ReceivedTime).split()[0]
+            try:
+                date = str(email.ReceivedTime).split()[0]
+            except Exception:
+                print(Exception)
+                continue 
 
             if date >= self.date_from and date <= self.date_to:
                 dict[date]['single'] += 1
@@ -121,4 +134,4 @@ class EmailRegistrationCount():
 
 ## ENGINE ##
 
-#EmailRegistrationCount(date_from='2021-04-07', date_to='2021-04-13')
+EmailRegistrationCount(date_from='2021-04-12', date_to='2021-04-18')

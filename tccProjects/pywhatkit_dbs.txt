@@ -1,0 +1,16 @@
+--------------------
+Date: 21:4:2021
+Time: 9:59
+Phone number: +64226472984
+Message: Test one, two, three... anything but THAT.
+--------------------
+Date: 21:4:2021
+Time: 12:20
+Phone number: +64226472984
+Message: Test one, two, three... anything but THAT.
+--------------------
+Date: 21:4:2021
+Time: 12:23
+Phone number: +64226472984
+Message: Test one, two, three... anything but THAT.
+--------------------

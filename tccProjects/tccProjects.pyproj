@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>c70d0140-cf49-4e1e-aea2-99c24ce7dc2b</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>190\EmailRegistrationCount.py</StartupFile>
+    <StartupFile>app\WhatsApp\whatsapp.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -80,6 +80,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="app\Selenium\__init__.py" />
+    <Compile Include="app\WhatsApp\whatsapp.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\WhatsApp\__init__.py" />
     <Compile Include="app\WinAuto\winAutoRemedy.py" />
     <Compile Include="app\WinAuto\winAutoImport.py" />
     <Compile Include="app\WinAuto\winAuto.py">
@@ -218,6 +222,7 @@
     <Folder Include="438\" />
     <Folder Include="app\" />
     <Folder Include="app\Excel\" />
+    <Folder Include="app\WhatsApp\" />
     <Folder Include="app\WinAuto\" />
     <Folder Include="app\PDF\" />
     <Folder Include="app\Outlook\" />

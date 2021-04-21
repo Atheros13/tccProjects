@@ -53,13 +53,8 @@ class Project438ActionEmail():
         self.run_driver()
 
         ## PROCESS
-        # if the operator has actioned in 10 minutes, saves a record as a .txt,
-        # saves a complete record in a .csv, and files the email
-        if self.customer_code == None:
-            self.close()
-        else:
-            self.process_data()
-            time.sleep(300)
+        self.process_data()
+        time.sleep(300)
 
     ## BUILD METHODS
     def build_remedy_data(self):
@@ -241,16 +236,21 @@ class Project438ActionEmail():
         self.driver_loginToProspect()
         self.driver_prospectInput()
 
-        #
-        count, action = self.driver_actionCheck()
-        self.customer_code = None
+        # Runs a number of checks for the presence of certain elements.
+        # Based on the values, the self.email_type may change, and once the code can recognise an 
+        # action, it returns a string value
+        action = self.driver_actionCheck()
+
+        # Based on the action value, the following functions determine self.email_type and 
+        # the self.customer_code value
         if action == "New Account":
             self.driver_NewAccount()
         elif action == "CRM":
-            self.driver_CRM_Note(count)
+            self.driver_CRM_Note()
         elif action == "Follow Up":
             self.driver_FollowUp()
 
+    ## PROSPECT LOGIN AND DATA INPUT
     def driver_loginToProspect(self):
         """Opens Eaccounts, logs in, and navigates to Prospect page."""
 
@@ -312,24 +312,30 @@ class Project438ActionEmail():
         self.driver.find_element_by_name("dCust__Code").send_keys(add1)
         self.driver.find_element_by_name("dCust__Code").send_keys(Keys.ENTER)
 
+    ## GET ACTION
     def driver_actionCheck(self):
+
         """Runs a constant check on the page to see if certain web elements
         are present, if they are it indicates what the operator has done,
-        and what type of email this was"""
+        and what type of email this was
+        
+        This will continue to run untill it can return a valid action value."""
 
-        count = 600
-        action = None
-        while count > 0:
+        while True:
 
-            # check for follow up
+            # Prospect Page - Check if Follow Up is written in the Loaded by field
+            # this indicates that the email cannot be processed right now i.e. missing
+            # information and needs to be followed up
             try:
                 check = self.driver.find_element_by_name("Prospect_Loaded_By").get_attribute("value")
                 if "FOLLOW UP" in check.upper():
-                    return count, "Follow Up"
+                    return "Follow Up"
             except:
                 pass
 
-            # check for new account and different call type
+            # Prospect Page - If the address is not in Eaccounts, but this is not a sales lead i.e. a Filter Service
+            # for a property with a DVS but not in Eaccounts. This process will create a new account.
+            # This does not return, it only changes the self.email_type value.
             try:
                 note = Select(self.driver.find_element_by_name("Prospect_Note_Type")).first_selected_option.text
                 if note != "Call Centre: Sales Lead":
@@ -337,37 +343,40 @@ class Project438ActionEmail():
             except:
                 pass
 
-            # check if new account/propect made
+            # Prospect Page - Once a prospect has been created, returns the  action value "New Account"
             try:
                 if "New Prospect Saved OK - Code = " in self.driver.find_elements_by_tag_name('h3')[0].text:
-                    return count, "New Account"
+                    return "New Account"
             except:
                 pass
 
-            # check if CRM note
+            # CRM Note - If the operator does not make a new account but is going to have to action the email for a 
+            # existing account, they always have to write a CRM note. Once they have moved to this section,
+            # this returns the action value "CRM"
             try:
                 self.driver.find_element_by_name("Save_CRM") # on CRM note page
-                return count, "CRM"
+                return "CRM"
             except:
                 pass
 
+            # After running a check, it waits a third of a second and checks again.
             time.sleep(0.3)
-            count -= 0.3
 
-        return count, None
-
+    ## GET DATA BASED ON ACTION ##
     def driver_NewAccount(self):
         """Assigns Customer Code of the new prospect/account."""
 
         self.customer_code = self.driver.find_elements_by_tag_name('h3')[0].text.split("New Prospect Saved OK - Code = ")[1]
 
-    def driver_CRM_Note(self, count):
+    def driver_CRM_Note(self):
         """Awaits action, and assigns customer code and email type"""
 
         # wait for action choice
-        while count > 0:
+        while True:
+
             summary = Select(self.driver.find_element_by_id("CRM_Note_Type")).first_selected_option.text
-            if "Please Specify" not in summary:
+            if "Call Centre:" in summary:
+                
                 # assign self.email_type
                 self.email_type = summary
 
@@ -375,33 +384,32 @@ class Project438ActionEmail():
                 form_table = self.driver.find_element_by_class_name("form_table")
                 self.customer_code = form_table.find_elements_by_tag_name("b")[0].text.split(" ]")[0].replace("[ ", "")
 
-                break
+                return
 
-            count -= 0.3
+            # If, once the operator has opened the existing account, they find they cannot progress i.e. not enough information,
+            # they can type Follow Up in the Summary field and the email will be filed in * WEBSITE - FOLLOW UP
+            short_note = self.driver.find_element_by_name("CRM_Short_Note").get_attribute("value").upper()
+            if short_note == "FOLLOW UP":
+                self.customer_code = "FOLLOW UP"
+                self.email_type = "Website: TCC to Follow Up"
+
+                return
+
+            time.sleep(0.3)
 
     def driver_FollowUp(self):
-        """Assigns """
+        """Assigns Follow Up values"""
 
+        self.customer_code = "FOLLOW UP"
         self.email_type = "Website: TCC to Follow Up"
 
     ## PROCESS METHODS
     def process_data(self):
-        """Processes data into a .txt and .csv for use in Remedy and Reporting, 
+        """Processes data into a .csv for use in Remedy and Reporting, 
         and files the email. """
 
-        #self.process_txt() # CURRENTLY ONLY IN IDEA STAGE
         self.process_csv()
         self.process_email()
-
-    def process_txt(self):
-        """
-        CURRENTLY ONLY IN IDEA STAGE
-
-        Writes a .txt file of data, which is used by Remedy to automate the Form."""
-
-        file = open('G:\\Customer Reporting\\438-DVS\\Automation\\Emails\\RemedyResults.txt', 'w')
-        file.write("%s\n%s\n%s" % (self.customer_code, self.email_type, self.email.Body))
-        file.close()
 
     def process_csv(self):
         """Append to a .csv recording all DVS email actions."""
@@ -423,10 +431,16 @@ class Project438ActionEmail():
     def process_email(self):
         """Files the email to the correct folder based on self.email_type."""
 
-        if "Follow" not in self.email_type:
+        # if this is not a Follow Up, mark as complete and change the Subject to include the CC
+        if self.email_type != "Website: TCC to Follow Up" :
             self.email.FlagRequest = "Mark Complete"
             self.email.Subject = "%s - %s" % (self.customer_code, self.email.Subject)
+        # else, just move the email to the Follow Up folder
+        else:
+            self.email.Move(self.outlook.follow_up)
+            self.close()
 
+        # Files the email according to self.email_type
         if "Sales Lead" in self.email_type:
             self.email.Move(self.outlook.sales)
         elif "Technical" in self.email_type:
@@ -435,19 +449,17 @@ class Project438ActionEmail():
             self.email.Move(self.outlook.filters)
         elif "Spare" in self.email_type:
             self.email.Move(self.outlook.spare_parts)
-        elif "Follow" in self.email_type:
-            self.email.Move(self.outlook.follow_up)
-            self.close()
         else:
             self.email.Move(self.outlook.general)
 
     ## CLOSE METHOD
     def close(self):
-        """Closes the browser, notepad, and ends the script"""
+        """Closes the browser, notepad, and ends the script - Only used with Follow Up"""
 
         self.driver.close()
         self.driver.quit()
         sys.exit(0)
+
 
 ## ENGINE ##
 

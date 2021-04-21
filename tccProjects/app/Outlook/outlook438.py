@@ -24,7 +24,7 @@ class Outlook438WebsiteLeads(Outlook):
                 self.general = dvs.Folders.Item("* WEBSITE - General Enquiries")
                 self.new_build = dvs.Folders.Item("* WEBSITE - New Build Enquiries")
                 self.spare_parts = dvs.Folders.Item("* WEBSITE - Spare Parts Enquiries")
-                self.follow_up = self.sales.Folders.Item("FOLLOW UP")
+                self.follow_up = dvs.Folders.Item("* WEBSITE - FOLLOW UP")
 
                 if button_action == "Inbox":
                     for box in r.Folders:
