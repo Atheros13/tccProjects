@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>c70d0140-cf49-4e1e-aea2-99c24ce7dc2b</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>app\WhatsApp\whatsapp.py</StartupFile>
+    <StartupFile>app\Outlook\FolderSearch.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -23,32 +23,32 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="190\email_cancellation.py" />
-    <Compile Include="190\main.py" />
-    <Compile Include="190\main_import_annual_cancellation.py">
+    <Compile Include="app\Outlook\FolderSearch.py" />
+    <Compile Include="cc190\EmailRegistrationCountCode.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="190\reg_automate.py" />
-    <Compile Include="190\reg_chip_check.py" />
-    <Compile Include="190\reg_open_email.py" />
-    <Compile Include="190\reg_pdf_split.py" />
-    <Compile Include="190\email_cancellation.py" />
-    <Compile Include="190\main.py" />
-    <Compile Include="190\reg_automate.py" />
-    <Compile Include="190\reg_chip_check.py" />
-    <Compile Include="190\reg_open_email.py" />
-    <Compile Include="190\reg_pdf_split.py" />
-    <Compile Include="190\EmailRegistrationCount.py" />
-    <Compile Include="190\Tasks\single_count.py">
+    <Compile Include="cc190\email_cancellation.py" />
+    <Compile Include="cc190\main.py" />
+    <Compile Include="cc190\main_import_annual_cancellation.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="190\Tasks\canterburyDead.py">
+    <Compile Include="cc190\reg_automate.py" />
+    <Compile Include="cc190\reg_chip_check.py" />
+    <Compile Include="cc190\reg_open_email.py" />
+    <Compile Include="cc190\reg_pdf_split.py" />
+    <Compile Include="cc190\EmailCount.py" />
+    <Compile Include="cc190\Tasks\single_count.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="190\RegistrationAutomation.py" />
+    <Compile Include="cc190\Tasks\canterburyDead.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="cc190\RegistrationAutomation.py" />
     <Compile Include="438\main_monthly_email_count.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="461\OpenJobEmail.py" />
+    <Compile Include="501\Open501MSG.py" />
     <Compile Include="562\main.py">
       <SubType>Code</SubType>
     </Compile>
@@ -69,6 +69,8 @@
     <Compile Include="app\functions\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="app\Outlook\outlook501.py" />
+    <Compile Include="app\Outlook\outlook461.py" />
     <Compile Include="app\Outlook\outlook438.py" />
     <Compile Include="app\Outlook\outlook.py" />
     <Compile Include="app\Outlook\__init__.py">
@@ -101,121 +103,160 @@
     <Compile Include="Operators\QuickSign\__init__.py" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="190\build\reg_open_email\Analysis-00.toc" />
-    <Content Include="190\build\reg_open_email\base_library.zip" />
-    <Content Include="190\build\reg_open_email\EXE-00.toc" />
-    <Content Include="190\build\reg_open_email\localpycos\struct.pyo" />
-    <Content Include="190\build\reg_open_email\PKG-00.pkg" />
-    <Content Include="190\build\reg_open_email\PKG-00.toc" />
-    <Content Include="190\build\reg_open_email\PYZ-00.pyz" />
-    <Content Include="190\build\reg_open_email\PYZ-00.toc" />
-    <Content Include="190\build\reg_open_email\reg_open_email.exe.manifest" />
-    <Content Include="190\build\reg_open_email\warn-reg_open_email.txt" />
-    <Content Include="190\build\reg_open_email\xref-reg_open_email.html" />
-    <Content Include="190\build\reg_pdf_split\Analysis-00.toc" />
-    <Content Include="190\build\reg_pdf_split\base_library.zip" />
-    <Content Include="190\build\reg_pdf_split\EXE-00.toc" />
-    <Content Include="190\build\reg_pdf_split\localpycos\struct.pyo" />
-    <Content Include="190\build\reg_pdf_split\PKG-00.pkg" />
-    <Content Include="190\build\reg_pdf_split\PKG-00.toc" />
-    <Content Include="190\build\reg_pdf_split\PYZ-00.pyz" />
-    <Content Include="190\build\reg_pdf_split\PYZ-00.toc" />
-    <Content Include="190\build\reg_pdf_split\reg_pdf_split.exe.manifest" />
-    <Content Include="190\build\reg_pdf_split\Tree-00.toc" />
-    <Content Include="190\build\reg_pdf_split\Tree-01.toc" />
-    <Content Include="190\build\reg_pdf_split\Tree-02.toc" />
-    <Content Include="190\build\reg_pdf_split\warn-reg_pdf_split.txt" />
-    <Content Include="190\build\reg_pdf_split\xref-reg_pdf_split.html" />
-    <Content Include="190\build\test\Analysis-00.toc" />
-    <Content Include="190\build\test\base_library.zip" />
-    <Content Include="190\build\test\COLLECT-00.toc" />
-    <Content Include="190\build\test\EXE-00.toc" />
-    <Content Include="190\build\test\localpycos\struct.pyo" />
-    <Content Include="190\build\test\PKG-00.pkg" />
-    <Content Include="190\build\test\PKG-00.toc" />
-    <Content Include="190\build\test\PYZ-00.pyz" />
-    <Content Include="190\build\test\PYZ-00.toc" />
-    <Content Include="190\build\test\test.exe" />
-    <Content Include="190\build\test\test.exe.manifest" />
-    <Content Include="190\build\test\Tree-00.toc" />
-    <Content Include="190\build\test\Tree-01.toc" />
-    <Content Include="190\build\test\Tree-02.toc" />
-    <Content Include="190\build\test\warn-test.txt" />
-    <Content Include="190\build\test\xref-test.html" />
-    <Content Include="190\reg_open_email.spec" />
-    <Content Include="190\reg_pdf_split.spec" />
-    <Content Include="190\build\reg_open_email\Analysis-00.toc" />
-    <Content Include="190\build\reg_open_email\base_library.zip" />
-    <Content Include="190\build\reg_open_email\EXE-00.toc" />
-    <Content Include="190\build\reg_open_email\localpycos\struct.pyo" />
-    <Content Include="190\build\reg_open_email\PKG-00.pkg" />
-    <Content Include="190\build\reg_open_email\PKG-00.toc" />
-    <Content Include="190\build\reg_open_email\PYZ-00.pyz" />
-    <Content Include="190\build\reg_open_email\PYZ-00.toc" />
-    <Content Include="190\build\reg_open_email\reg_open_email.exe.manifest" />
-    <Content Include="190\build\reg_open_email\warn-reg_open_email.txt" />
-    <Content Include="190\build\reg_open_email\xref-reg_open_email.html" />
-    <Content Include="190\build\reg_pdf_split\Analysis-00.toc" />
-    <Content Include="190\build\reg_pdf_split\base_library.zip" />
-    <Content Include="190\build\reg_pdf_split\EXE-00.toc" />
-    <Content Include="190\build\reg_pdf_split\localpycos\struct.pyo" />
-    <Content Include="190\build\reg_pdf_split\PKG-00.pkg" />
-    <Content Include="190\build\reg_pdf_split\PKG-00.toc" />
-    <Content Include="190\build\reg_pdf_split\PYZ-00.pyz" />
-    <Content Include="190\build\reg_pdf_split\PYZ-00.toc" />
-    <Content Include="190\build\reg_pdf_split\reg_pdf_split.exe.manifest" />
-    <Content Include="190\build\reg_pdf_split\Tree-00.toc" />
-    <Content Include="190\build\reg_pdf_split\Tree-01.toc" />
-    <Content Include="190\build\reg_pdf_split\Tree-02.toc" />
-    <Content Include="190\build\reg_pdf_split\warn-reg_pdf_split.txt" />
-    <Content Include="190\build\reg_pdf_split\xref-reg_pdf_split.html" />
-    <Content Include="190\build\test\Analysis-00.toc" />
-    <Content Include="190\build\test\base_library.zip" />
-    <Content Include="190\build\test\COLLECT-00.toc" />
-    <Content Include="190\build\test\EXE-00.toc" />
-    <Content Include="190\build\test\localpycos\struct.pyo" />
-    <Content Include="190\build\test\PKG-00.pkg" />
-    <Content Include="190\build\test\PKG-00.toc" />
-    <Content Include="190\build\test\PYZ-00.pyz" />
-    <Content Include="190\build\test\PYZ-00.toc" />
-    <Content Include="190\build\test\test.exe" />
-    <Content Include="190\build\test\test.exe.manifest" />
-    <Content Include="190\build\test\Tree-00.toc" />
-    <Content Include="190\build\test\Tree-01.toc" />
-    <Content Include="190\build\test\Tree-02.toc" />
-    <Content Include="190\build\test\warn-test.txt" />
-    <Content Include="190\build\test\xref-test.html" />
-    <Content Include="190\reg_open_email.spec" />
-    <Content Include="190\reg_pdf_split.spec" />
+    <Content Include="438\main_monthly_email_count.spec" />
+    <Content Include="cc190\.spec" />
+    <Content Include="cc190\build\.spec\.exe" />
+    <Content Include="cc190\build\.spec\.spec.exe.manifest" />
+    <Content Include="cc190\build\.spec\Analysis-00.toc" />
+    <Content Include="cc190\build\.spec\base_library.zip" />
+    <Content Include="cc190\build\.spec\EXE-00.toc" />
+    <Content Include="cc190\build\.spec\localpycos\struct.pyo" />
+    <Content Include="cc190\build\.spec\PKG-00.pkg" />
+    <Content Include="cc190\build\.spec\PKG-00.toc" />
+    <Content Include="cc190\build\.spec\PYZ-00.pyz" />
+    <Content Include="cc190\build\.spec\PYZ-00.toc" />
+    <Content Include="cc190\build\.spec\warn-.spec.txt" />
+    <Content Include="cc190\build\.spec\xref-.spec.html" />
+    <Content Include="cc190\build\EmailRegistrationCountCode\Analysis-00.toc" />
+    <Content Include="cc190\build\EmailRegistrationCountCode\base_library.zip" />
+    <Content Include="cc190\build\EmailRegistrationCountCode\EmailRegistrationCountCode.exe.manifest" />
+    <Content Include="cc190\build\EmailRegistrationCountCode\EXE-00.toc" />
+    <Content Include="cc190\build\EmailRegistrationCountCode\localpycos\struct.pyo" />
+    <Content Include="cc190\build\EmailRegistrationCountCode\PKG-00.pkg" />
+    <Content Include="cc190\build\EmailRegistrationCountCode\PKG-00.toc" />
+    <Content Include="cc190\build\EmailRegistrationCountCode\PYZ-00.pyz" />
+    <Content Include="cc190\build\EmailRegistrationCountCode\PYZ-00.toc" />
+    <Content Include="cc190\build\EmailRegistrationCountCode\warn-EmailRegistrationCountCode.txt" />
+    <Content Include="cc190\build\EmailRegistrationCountCode\xref-EmailRegistrationCountCode.html" />
+    <Content Include="cc190\build\main_import_annual_cancellation\Analysis-00.toc" />
+    <Content Include="cc190\build\main_import_annual_cancellation\base_library.zip" />
+    <Content Include="cc190\build\main_import_annual_cancellation\COLLECT-00.toc" />
+    <Content Include="cc190\build\main_import_annual_cancellation\EXE-00.toc" />
+    <Content Include="cc190\build\main_import_annual_cancellation\localpycos\struct.pyo" />
+    <Content Include="cc190\build\main_import_annual_cancellation\main_import_annual_cancellation.exe" />
+    <Content Include="cc190\build\main_import_annual_cancellation\main_import_annual_cancellation.exe.manifest" />
+    <Content Include="cc190\build\main_import_annual_cancellation\PKG-00.pkg" />
+    <Content Include="cc190\build\main_import_annual_cancellation\PKG-00.toc" />
+    <Content Include="cc190\build\main_import_annual_cancellation\PYZ-00.pyz" />
+    <Content Include="cc190\build\main_import_annual_cancellation\PYZ-00.toc" />
+    <Content Include="cc190\build\main_import_annual_cancellation\Tree-00.toc" />
+    <Content Include="cc190\build\main_import_annual_cancellation\Tree-01.toc" />
+    <Content Include="cc190\build\main_import_annual_cancellation\Tree-02.toc" />
+    <Content Include="cc190\build\main_import_annual_cancellation\warn-main_import_annual_cancellation.txt" />
+    <Content Include="cc190\build\main_import_annual_cancellation\xref-main_import_annual_cancellation.html" />
+    <Content Include="cc190\build\RegistrationAutomation\Analysis-00.toc" />
+    <Content Include="cc190\build\RegistrationAutomation\base_library.zip" />
+    <Content Include="cc190\build\RegistrationAutomation\EXE-00.toc" />
+    <Content Include="cc190\build\RegistrationAutomation\localpycos\struct.pyo" />
+    <Content Include="cc190\build\RegistrationAutomation\PKG-00.pkg" />
+    <Content Include="cc190\build\RegistrationAutomation\PKG-00.toc" />
+    <Content Include="cc190\build\RegistrationAutomation\PYZ-00.pyz" />
+    <Content Include="cc190\build\RegistrationAutomation\PYZ-00.toc" />
+    <Content Include="cc190\build\RegistrationAutomation\RegistrationAutomation.exe.manifest" />
+    <Content Include="cc190\build\RegistrationAutomation\warn-RegistrationAutomation.txt" />
+    <Content Include="cc190\build\RegistrationAutomation\xref-RegistrationAutomation.html" />
+    <Content Include="cc190\build\reg_automate\Analysis-00.toc" />
+    <Content Include="cc190\build\reg_automate\base_library.zip" />
+    <Content Include="cc190\build\reg_automate\COLLECT-00.toc" />
+    <Content Include="cc190\build\reg_automate\EXE-00.toc" />
+    <Content Include="cc190\build\reg_automate\localpycos\struct.pyo" />
+    <Content Include="cc190\build\reg_automate\PKG-00.pkg" />
+    <Content Include="cc190\build\reg_automate\PKG-00.toc" />
+    <Content Include="cc190\build\reg_automate\PYZ-00.pyz" />
+    <Content Include="cc190\build\reg_automate\PYZ-00.toc" />
+    <Content Include="cc190\build\reg_automate\reg_automate.exe" />
+    <Content Include="cc190\build\reg_automate\reg_automate.exe.manifest" />
+    <Content Include="cc190\build\reg_automate\warn-reg_automate.txt" />
+    <Content Include="cc190\build\reg_automate\xref-reg_automate.html" />
+    <Content Include="cc190\build\reg_open_email\Analysis-00.toc" />
+    <Content Include="cc190\build\reg_open_email\base_library.zip" />
+    <Content Include="cc190\build\reg_open_email\EXE-00.toc" />
+    <Content Include="cc190\build\reg_open_email\localpycos\struct.pyo" />
+    <Content Include="cc190\build\reg_open_email\PKG-00.pkg" />
+    <Content Include="cc190\build\reg_open_email\PKG-00.toc" />
+    <Content Include="cc190\build\reg_open_email\PYZ-00.pyz" />
+    <Content Include="cc190\build\reg_open_email\PYZ-00.toc" />
+    <Content Include="cc190\build\reg_open_email\reg_open_email.exe.manifest" />
+    <Content Include="cc190\build\reg_open_email\warn-reg_open_email.txt" />
+    <Content Include="cc190\build\reg_open_email\xref-reg_open_email.html" />
+    <Content Include="cc190\build\reg_pdf_split\Analysis-00.toc" />
+    <Content Include="cc190\build\reg_pdf_split\base_library.zip" />
+    <Content Include="cc190\build\reg_pdf_split\EXE-00.toc" />
+    <Content Include="cc190\build\reg_pdf_split\localpycos\struct.pyo" />
+    <Content Include="cc190\build\reg_pdf_split\PKG-00.pkg" />
+    <Content Include="cc190\build\reg_pdf_split\PKG-00.toc" />
+    <Content Include="cc190\build\reg_pdf_split\PYZ-00.pyz" />
+    <Content Include="cc190\build\reg_pdf_split\PYZ-00.toc" />
+    <Content Include="cc190\build\reg_pdf_split\reg_pdf_split.exe.manifest" />
+    <Content Include="cc190\build\reg_pdf_split\Tree-00.toc" />
+    <Content Include="cc190\build\reg_pdf_split\Tree-01.toc" />
+    <Content Include="cc190\build\reg_pdf_split\Tree-02.toc" />
+    <Content Include="cc190\build\reg_pdf_split\warn-reg_pdf_split.txt" />
+    <Content Include="cc190\build\reg_pdf_split\xref-reg_pdf_split.html" />
+    <Content Include="cc190\build\test\Analysis-00.toc" />
+    <Content Include="cc190\build\test\base_library.zip" />
+    <Content Include="cc190\build\test\COLLECT-00.toc" />
+    <Content Include="cc190\build\test\EXE-00.toc" />
+    <Content Include="cc190\build\test\localpycos\struct.pyo" />
+    <Content Include="cc190\build\test\PKG-00.pkg" />
+    <Content Include="cc190\build\test\PKG-00.toc" />
+    <Content Include="cc190\build\test\PYZ-00.pyz" />
+    <Content Include="cc190\build\test\PYZ-00.toc" />
+    <Content Include="cc190\build\test\test.exe" />
+    <Content Include="cc190\build\test\test.exe.manifest" />
+    <Content Include="cc190\build\test\Tree-00.toc" />
+    <Content Include="cc190\build\test\Tree-01.toc" />
+    <Content Include="cc190\build\test\Tree-02.toc" />
+    <Content Include="cc190\build\test\warn-test.txt" />
+    <Content Include="cc190\build\test\xref-test.html" />
+    <Content Include="cc190\dist\reg_open_email.exe" />
+    <Content Include="cc190\EmailRegistrationCountCode.spec" />
+    <Content Include="cc190\main_import_annual_cancellation.spec" />
+    <Content Include="cc190\RegistrationAutomation.spec" />
+    <Content Include="cc190\reg_automate.spec" />
+    <Content Include="cc190\reg_open_email.spec" />
+    <Content Include="cc190\reg_pdf_split.spec" />
+    <Content Include="461\dist\OpenPDF.exe" />
+    <Content Include="501\dist\Open501MSG.exe" />
     <Content Include="562\language.csv">
       <SubType>Code</SubType>
     </Content>
     <Content Include="438\main_action_email.spec" />
     <Content Include="562\main.spec" />
+    <Content Include="cc190\__pycache__\EmailRegistrationCountCode.cpython-37.pyc" />
+    <Content Include="cc190\__pycache__\main_import_annual_cancellation.cpython-37.pyc" />
+    <Content Include="cc190\__pycache__\RegistrationAutomation.cpython-37.pyc" />
+    <Content Include="cc190\__pycache__\reg_automate.cpython-37.pyc" />
+    <Content Include="cc190\__pycache__\reg_open_email.cpython-37.pyc" />
+    <Content Include="cc190\__pycache__\reg_pdf_split.cpython-37.pyc" />
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="190\" />
-    <Folder Include="190\build\" />
-    <Folder Include="190\build\reg_open_email\" />
-    <Folder Include="190\build\reg_open_email\localpycos\" />
-    <Folder Include="190\build\reg_pdf_split\" />
-    <Folder Include="190\build\reg_pdf_split\localpycos\" />
-    <Folder Include="190\build\test\" />
-    <Folder Include="190\build\test\localpycos\" />
-    <Folder Include="190\dist\" />
-    <Folder Include="190\Tests\" />
-    <Folder Include="190\Tasks\" />
-    <Folder Include="190\__pycache__\" />
-    <Folder Include="190\" />
-    <Folder Include="190\build\" />
-    <Folder Include="190\build\reg_open_email\" />
-    <Folder Include="190\build\reg_open_email\localpycos\" />
-    <Folder Include="190\build\reg_pdf_split\" />
-    <Folder Include="190\build\reg_pdf_split\localpycos\" />
-    <Folder Include="190\build\test\" />
-    <Folder Include="190\build\test\localpycos\" />
-    <Folder Include="190\dist\" />
+    <Folder Include="cc190\" />
+    <Folder Include="cc190\build\" />
+    <Folder Include="cc190\build\.spec\" />
+    <Folder Include="cc190\build\.spec\localpycos\" />
+    <Folder Include="cc190\build\EmailRegistrationCountCode\" />
+    <Folder Include="cc190\build\EmailRegistrationCountCode\localpycos\" />
+    <Folder Include="cc190\build\main_import_annual_cancellation\" />
+    <Folder Include="cc190\build\main_import_annual_cancellation\localpycos\" />
+    <Folder Include="cc190\build\RegistrationAutomation\" />
+    <Folder Include="cc190\build\RegistrationAutomation\localpycos\" />
+    <Folder Include="cc190\build\reg_automate\" />
+    <Folder Include="cc190\build\reg_automate\localpycos\" />
+    <Folder Include="cc190\build\reg_open_email\" />
+    <Folder Include="cc190\build\reg_open_email\localpycos\" />
+    <Folder Include="cc190\build\reg_pdf_split\" />
+    <Folder Include="cc190\build\reg_pdf_split\localpycos\" />
+    <Folder Include="cc190\build\reg_split_pdf\" />
+    <Folder Include="cc190\build\test\" />
+    <Folder Include="cc190\build\test\localpycos\" />
+    <Folder Include="cc190\dist\" />
+    <Folder Include="cc190\Tests\" />
+    <Folder Include="cc190\Tasks\" />
+    <Folder Include="cc190\__pycache__\" />
+    <Folder Include="461\dist\" />
+    <Folder Include="501\dist\" />
     <Folder Include="562\dist\" />
     <Folder Include="app\CSV\" />
     <Folder Include="app\functions\" />
@@ -230,6 +271,8 @@
     <Folder Include="Import DB\" />
     <Folder Include="564\" />
     <Folder Include="562\" />
+    <Folder Include="461\" />
+    <Folder Include="501\" />
     <Folder Include="Operators\" />
     <Folder Include="Operators\QuickSign\" />
   </ItemGroup>

@@ -29,11 +29,11 @@ class Project438ActionEmail():
         # process arguments from Remedy into useable data
         # [loaded_by, username, password]
         self.remedy_data = self.build_remedy_data()
-        button_action = self.remedy_data[3]
+        self.button_action = self.remedy_data[3]
 
         ## OUTLOOK
         # access Outlook and reference the required folders
-        self.outlook = Outlook438(button_action)
+        self.outlook = Outlook438(self.button_action)
         # access an email to work with
         self.email = self.outlook.get_email()
         if self.email == None:
@@ -67,7 +67,7 @@ class Project438ActionEmail():
             loaded_by = "%s %s" % (argv[1], argv[2])
             username = argv[3]
             password = argv[4]
-            button_action = argv[5] # Inbox or Follow
+            button_action = argv[5] # Inbox or Follow or CC
 
         else:
     
@@ -86,6 +86,12 @@ class Project438ActionEmail():
 
         msg = self.email
         subject = msg.subject
+        if self.button_action == "CC":
+            try:
+                subject = email.Subject.split(" - ")[1]
+            except:
+                pass
+
         message = ""
         notepad = msg.body
 
@@ -434,7 +440,10 @@ class Project438ActionEmail():
         # if this is not a Follow Up, mark as complete and change the Subject to include the CC
         if self.email_type != "Website: TCC to Follow Up" :
             self.email.FlagRequest = "Mark Complete"
-            self.email.Subject = "%s - %s" % (self.customer_code, self.email.Subject)
+            if self.button_action != "CC" or self.customer_code in self.email.Subject:
+                self.email.Subject = "%s - %s" % (self.customer_code, self.email.Subject)
+            elif self.button_action == "CC":
+                self.email.Subject = "%s %s" % (self.customer_code, self.email.Subject)
         # else, just move the email to the Follow Up folder
         else:
             self.email.Move(self.outlook.follow_up)

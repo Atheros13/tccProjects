@@ -10,6 +10,7 @@ class Outlook438WebsiteLeads(Outlook):
     def __init__(self, button_action, *args, **kwargs):
 
         self.outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
+        self.button_action = button_action
         self.get_folders(button_action)
 
     def get_folders(self, button_action):
@@ -28,7 +29,7 @@ class Outlook438WebsiteLeads(Outlook):
 
                 if button_action == "Inbox":
                     for box in r.Folders:
-                        if box.name == "Inbox" and button_action == "Inbox":
+                        if box.name == "Inbox" and (button_action == "Inbox" or button_action == "CC"):
                             self.inbox = box
                 elif button_action == "Follow":
                     self.inbox = self.follow_up
@@ -41,6 +42,12 @@ class Outlook438WebsiteLeads(Outlook):
 
         if email.Subject in dvs_subjects:
             return True
+        elif self.button_action == "CC":
+            try:
+                if email.Subject.split(" - ")[1] in dvs_subjects:
+                    return True
+            except:
+                pass
 
 class Outlook438AllEmails(Outlook):
 
@@ -54,9 +61,10 @@ class Outlook438AllEmails(Outlook):
         self.outlook = win32com.client.Dispatch("Outlook.Application").GetNamespace("MAPI")
 
         self.process_folders()
+        #print(self.data)
 
-        for folder in self.data:
-            print(folder, self.data[folder])
+        #for folder in self.data:
+        #   print(folder, self.data[folder])
 
     ## ?
     def month(self):
